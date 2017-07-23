@@ -46,10 +46,10 @@ class ServerlessInvoker {
   /**
    * Invokes the serverless function bound to the HTTP event with the provided specification.
    * @param {*string} httpRequest A method+path like 'GET api/users/me'.
-   * @param {*object} headers Set of http headers to include in the request.
-   * @param {*object} data The data that should be submitted to the http endpoint.
+   * @param {*object} event The event that should be submitted to the http endpoint.
+   * @param {*object} context The context passed to the lambda function
    */
-  invoke (httpRequest, headers, data, context) {
+  invoke (httpRequest, event, context) {
     // Read the serverless.yml file
     return this.initializeServerless()
       .then(() => this.loadServerlessEvents())
@@ -60,7 +60,7 @@ class ServerlessInvoker {
           throw new Error(`Serverless http event not found for HTTP request "${httpRequest}".`)
         }
         return this.loadServerlessEnvironment().then(() => {
-          return this.invokeWithLambdaWrapper(httpEvent, headers, data, context).then(response => {
+          return this.invokeWithLambdaWrapper(httpEvent, event, context).then(response => {
             if (response &&
                 response.headers &&
                 Object.keys(response.headers).includes('Content-Type') &&
@@ -84,12 +84,12 @@ class ServerlessInvoker {
     })
   }
 
-  invokeWithLambdaWrapper (httpEvent, headers, data, context) {
+  invokeWithLambdaWrapper (httpEvent, event, context) {
     return Promise.try(() => {
       let handlerModule = require(path.join(this.servicePath, httpEvent.handlerPath))
       let lambda = wrap(handlerModule, {handler: httpEvent.handlerName})
       lambda = Promise.promisifyAll(lambda)
-      return lambda.runHandler(data, context || {})
+      return lambda.runHandler(event, context || {})
     })
   }
 
@@ -109,7 +109,7 @@ class ServerlessInvoker {
       f.events = f.events.map(e => {
         // add a path parser regex:
         RegExp.escape = function (s) { // https://stackoverflow.com/a/3561711/51061
-          return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+          return s.replace(/[-/\\^$*+?.()|[\]]/g, '\\$&')
         }
         let path = null
         let method = null
@@ -125,6 +125,7 @@ class ServerlessInvoker {
         let pattern = RegExp.escape(path)
         pattern = pattern.replace(/\/\{[^}]*\}/, '/[^/]*')
         let r = new RegExp('^' + method + '\\s+' + pattern, 'gi')
+        // console.log('path:', path, 'pattern:', pattern, 'r:', r)
         return Object.assign(e.http, { matcher: r })
       })
       return f
