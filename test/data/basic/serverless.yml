@@ -1,0 +1,51 @@
+service: basic
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+
+  environment:
+    MY_SIMPLE: 'simple value'
+    MY_DYNAMIC: '${self:provider.stage}'
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/hello
+          method: get
+
+  with_params:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/hello/{greeting}
+          method: get
+  
+  shorthand_path_syntax:
+    handler: handler.hello
+    events:
+      - http: GET api/shorthand
+  
+  malformed_http_event:
+    handler: handler.hello
+    events:
+      - http:
+        path: note_how_path_isnt_indented_enough
+        method: get
+
+  env:
+    handler: handler.env
+    events:
+      - http:
+          path: api/env
+          method: get
+
+  postit:
+      handler: handler.postit
+      events:
+        - http:
+            path: api/postit
+            method: POST

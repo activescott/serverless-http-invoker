@@ -1,0 +1,26 @@
+{
+  "name": "serverless-http-invoker",
+  "version": "0.1.0",
+  "description": "Locally invoke Serverless functions via their HTTP event as specified in Serverless.yml for testing.",
+  "main": "index.js",
+  "author": "scott@willeke.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/activescott/serverless-http-invoker.git"
+  },
+  "scripts":{
+    "test": "clear; ./node_modules/.bin/mocha",
+    "watch": "clear; ./node_modules/.bin/mocha -w"
+  },
+  "dependencies": {
+    "lambda-wrapper": "^0.2.1",
+    "serverless": "^1.18.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^3.4.2",
+    "standard": "^10.0.2"
+  }
+}
