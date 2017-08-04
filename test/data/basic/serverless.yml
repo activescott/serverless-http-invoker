@@ -35,6 +35,10 @@ functions:
       - http:
         path: note_how_path_isnt_indented_enough
         method: get
+  path_with_multiple_params:
+    handler: handler.hello
+    events:
+      - http: GET api/res1/{res1ID}/res2/{res2ID}
 
   env:
     handler: handler.env

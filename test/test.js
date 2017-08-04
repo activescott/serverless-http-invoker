@@ -26,6 +26,11 @@ describe('serverless-http-invoker', function () {
     return expect(response).to.eventually.have.property('statusCode', 200)
   })
 
+  it('should invoke path with multiple params', function () {
+    let response = sls.invoke('GET api/res1/1111/res2/2222')
+    return expect(response).to.eventually.have.property('statusCode', 200)
+  })
+
   it('should parse json response body', function () {
     let response = sls.invoke('GET api/hello')
     expect(response).to.eventually.have.property('statusCode', 200)
@@ -39,7 +44,7 @@ describe('serverless-http-invoker', function () {
   })
 
   it('should pass data to POST', function () {
-    let response = sls.invoke('POST api/postit', null, {body: 'boo'})
+    let response = sls.invoke('POST api/postit', {body: 'boo'})
     return expect(response).to.eventually.have.deep.property('body', {message: 'postit:boo'})
   })
 })

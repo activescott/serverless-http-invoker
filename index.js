@@ -123,7 +123,7 @@ class ServerlessInvoker {
         }
 
         let pattern = RegExp.escape(path)
-        pattern = pattern.replace(/\/\{[^}]*\}/, '/[^/]*')
+        pattern = pattern.replace(/\/\{[^}]*\}/gi, '/[^/]*')
         let r = new RegExp('^' + method + '\\s+' + pattern, 'gi')
         // console.log('path:', path, 'pattern:', pattern, 'r:', r)
         return Object.assign(e.http, { matcher: r })
