@@ -51,12 +51,12 @@ describe('serverless-http-invoker', function () {
   it('should pass pathParameters with values when present', function () {
     let response = sls.invoke('GET api/res1/xxx/res2/yyy')
     return response.then(resp => {
-      return expect(resp.body).to.have.deep.property('input', { 
+      return expect(resp.body).to.have.deep.property('input', {
         pathParameters: {
           res1ID: 'xxx',
           res2ID: 'yyy'
         }
-      }) 
+      })
     })
   })
 
@@ -68,7 +68,6 @@ describe('serverless-http-invoker', function () {
         res1ID: 'xxx',
         res2ID: 'yyy'
       })
-      console.log('resp:', resp)
       expect(resp.body.input).to.have.property('requestPayload', 'boo')
     })
   })
@@ -76,9 +75,9 @@ describe('serverless-http-invoker', function () {
   it('should pass pathParameters empty when not present', function () {
     let response = sls.invoke('GET api/hello')
     return response.then(resp => {
-      return expect(resp.body).to.have.deep.property('input', { 
+      return expect(resp.body).to.have.deep.property('input', {
         pathParameters: {}
-      }) 
+      })
     })
   })
 })

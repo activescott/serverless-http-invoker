@@ -11,7 +11,9 @@
   },
   "scripts": {
     "test": "clear; ./node_modules/.bin/mocha",
-    "watch": "clear; ./node_modules/.bin/mocha -w"
+    "watch": "clear; ./node_modules/.bin/mocha -w",
+    "lint": "./node_modules/.bin/standard './index.js' './test/test.js'",
+    "pretest": "npm run lint"
   },
   "dependencies": {
     "lambda-wrapper": "^0.2.1",
