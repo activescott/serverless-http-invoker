@@ -59,6 +59,27 @@ class ServerlessInvoker {
         if (!httpEvent) {
           throw new Error(`Serverless http event not found for HTTP request "${httpRequest}".`)
         }
+        let pathParamValues = httpEvent.matcher.exec(httpRequest) || []
+        if (pathParamValues.length > 0) {
+          pathParamValues = pathParamValues.slice(1)
+        }
+        /*
+        console.log('')
+        console.log(`httpRequest:"${httpRequest}"`)
+        console.log(' httpEvent:', httpEvent)
+        console.log(' test:', httpEvent.matcher.test(httpRequest))
+        console.log(' pathParamValues:', pathParamValues)
+        console.log(' httpEvent.pathParamNames:', httpEvent.pathParamNames)
+        */
+        const pathParametersMap = {}
+        assert(httpEvent.pathParamNames.length === pathParamValues.length, `expected param names and param values to have same length, but were ${httpEvent.pathParamNames.length} === ${pathParamValues.length}`)
+        for (let i=0; i < httpEvent.pathParamNames.length; i++) {
+          let paramName = httpEvent.pathParamNames[i]
+          pathParametersMap[paramName] = pathParamValues[i]
+        }
+        event = Object.assign({}, event, {
+          pathParameters: pathParametersMap
+        })
         return this.loadServerlessEnvironment().then(() => {
           return this.invokeWithLambdaWrapper(httpEvent, event, context).then(response => {
             if (response &&
@@ -106,27 +127,31 @@ class ServerlessInvoker {
     })
     .filter(f => f.events.length > 0)
     .map(f => {
-      f.events = f.events.map(e => {
+      f.events = f.events.map(evt => {
         // add a path parser regex:
         RegExp.escape = function (s) { // https://stackoverflow.com/a/3561711/51061
           return s.replace(/[-/\\^$*+?.()|[\]]/g, '\\$&')
         }
         let path = null
         let method = null
-        if (typeof e.http === 'object') {
-          path = e.http.path
-          method = e.http.method
+        if (typeof evt.http === 'object') {
+          path = evt.http.path
+          method = evt.http.method
         } else {
-          assert(typeof e.http === 'string', `Expected http event to have a type of object or string but was ${typeof e.http}.`)
-          method = e.http.split(' ')[0]
-          path = e.http.split(' ')[1]
+          assert(typeof evt.http === 'string', `Expected http event to have a type of object or string but was ${typeof evt.http}.`)
+          method = evt.http.split(' ')[0]
+          path = evt.http.split(' ')[1]
         }
-
         let pattern = RegExp.escape(path)
-        pattern = pattern.replace(/\/\{[^}]*\}/gi, '/[^/]*')
-        let r = new RegExp('^' + method + '\\s+' + pattern, 'gi')
-        // console.log('path:', path, 'pattern:', pattern, 'r:', r)
-        return Object.assign(e.http, { matcher: r })
+        // first collect the pathParamNames:
+        let matchPathParamNames = new RegExp(pattern.replace(/\/\{[^}]*\}/gi, '/([^/]*)'), 'gi')
+        let pathParamNames = matchPathParamNames.exec(path).slice(1) // the first element is full matched text so slice it off
+        // remove the surrounding bracket characters:
+        pathParamNames = pathParamNames.map(p => p.replace(/^\{([^\}]+)\}$/, '$1'))
+        // now collect the values for the params:
+        let matcher = new RegExp('^' + method + '\\s+' + pattern.replace(/\/\{[^}]*\}/gi, '/([^/]*)'), 'i')
+        // console.log('path:', path, 'matcher:', matcher)
+        return Object.assign(evt.http, { matcher: matcher, pathParamNames: pathParamNames })
       })
       return f
     })
