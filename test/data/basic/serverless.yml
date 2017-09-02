@@ -35,6 +35,7 @@ functions:
       - http:
         path: note_how_path_isnt_indented_enough
         method: get
+
   path_with_multiple_params:
     handler: handler.hello
     events:
@@ -53,3 +54,10 @@ functions:
         - http:
             path: api/postit
             method: POST
+  
+  with_querystring_params:
+    handler: handler.with_querystring_params
+    events:
+      - http:
+          path: api/with_querystring_params
+          method: get

@@ -51,11 +51,9 @@ describe('serverless-http-invoker', function () {
   it('should pass pathParameters with values when present', function () {
     let response = sls.invoke('GET api/res1/xxx/res2/yyy')
     return response.then(resp => {
-      return expect(resp.body).to.have.deep.property('input', {
-        pathParameters: {
-          res1ID: 'xxx',
-          res2ID: 'yyy'
-        }
+      return expect(resp.body.input).to.have.deep.property('pathParameters', {
+        res1ID: 'xxx',
+        res2ID: 'yyy'
       })
     })
   })
@@ -75,9 +73,24 @@ describe('serverless-http-invoker', function () {
   it('should pass pathParameters empty when not present', function () {
     let response = sls.invoke('GET api/hello')
     return response.then(resp => {
-      return expect(resp.body).to.have.deep.property('input', {
-        pathParameters: {}
+      return expect(resp.body.input).to.have.deep.property('pathParameters', {})
+    })
+  })
+
+  it('should pass queryStringParameters with values when present', function () {
+    let response = sls.invoke('GET api/with_querystring_params?p1=val1&p2=val2')
+    return response.then(resp => {
+      return expect(resp.body.input).to.have.deep.property('queryStringParameters', {
+        p1: 'val1',
+        p2: 'val2'
       })
+    })
+  })
+
+  it('should pass queryStringParameters with values when not present', function () {
+    let response = sls.invoke('GET api/with_querystring_params')
+    return response.then(resp => {
+      return expect(resp.body.input).to.have.deep.property('queryStringParameters', {})
     })
   })
 })

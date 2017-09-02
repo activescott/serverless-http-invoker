@@ -5,6 +5,8 @@ const Serverless = require('serverless')
 const Promise = require('bluebird')
 const { wrap } = require('lambda-wrapper')
 const assert = require('assert')
+const { URL } = require('url')
+const querystring = require('querystring')
 
 class ServerlessInvoker {
   /**
@@ -59,27 +61,12 @@ class ServerlessInvoker {
         if (!httpEvent) {
           throw new Error(`Serverless http event not found for HTTP request "${httpRequest}".`)
         }
-        let pathParamValues = httpEvent.matcher.exec(httpRequest) || []
-        if (pathParamValues.length > 0) {
-          pathParamValues = pathParamValues.slice(1)
-        }
-        /*
-        console.log('')
-        console.log(`httpRequest:"${httpRequest}"`)
-        console.log(' httpEvent:', httpEvent)
-        console.log(' test:', httpEvent.matcher.test(httpRequest))
-        console.log(' pathParamValues:', pathParamValues)
-        console.log(' httpEvent.pathParamNames:', httpEvent.pathParamNames)
-        */
-        const pathParametersMap = {}
-        assert(httpEvent.pathParamNames.length === pathParamValues.length, `expected param names and param values to have same length, but were ${httpEvent.pathParamNames.length} === ${pathParamValues.length}`)
-        for (let i = 0; i < httpEvent.pathParamNames.length; i++) {
-          let paramName = httpEvent.pathParamNames[i]
-          pathParametersMap[paramName] = pathParamValues[i]
-        }
+
         event = Object.assign({}, event, {
-          pathParameters: pathParametersMap
+          pathParameters: ServerlessInvoker.parsePathParameters(httpEvent, httpRequest),
+          queryStringParameters: ServerlessInvoker.parseQueryStringParameters(httpRequest)
         })
+
         return this.loadServerlessEnvironment().then(() => {
           return this.invokeWithLambdaWrapper(httpEvent, event, context).then(response => {
             if (response &&
@@ -95,6 +82,26 @@ class ServerlessInvoker {
           })
         })
       })
+  }
+
+  static parsePathParameters (httpEvent, httpRequest) {
+    let pathParamValues = httpEvent.matcher.exec(httpRequest) || []
+    if (pathParamValues.length > 0) {
+      pathParamValues = pathParamValues.slice(1)
+    }
+    const pathParametersMap = {}
+    assert(httpEvent.pathParamNames.length === pathParamValues.length, `expected param names and param values to have same length, but were ${httpEvent.pathParamNames.length} === ${pathParamValues.length}`)
+    for (let i = 0; i < httpEvent.pathParamNames.length; i++) {
+      let paramName = httpEvent.pathParamNames[i]
+      pathParametersMap[paramName] = pathParamValues[i]
+    }
+    return pathParametersMap
+  }
+
+  static parseQueryStringParameters (requestUrl) {
+    const myURL = new URL('https://fakehost.com/' + requestUrl.split(' ')[1])
+    const search = myURL.search.length > 0 ? myURL.search.slice(1) : myURL.search
+    return querystring.parse(search)
   }
 
   loadServerlessEnvironment () {

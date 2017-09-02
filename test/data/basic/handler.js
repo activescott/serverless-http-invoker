@@ -16,6 +16,22 @@ module.exports.hello = (event, context, callback) => {
   callback(null, response)
 }
 
+module.exports.with_querystring_params = (event, context, callback) => {
+  const response = {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: 'QueryStringParams on prop',
+      queryStringParameters: event.queryStringParameters,
+      input: event
+    })
+  }
+
+  callback(null, response)
+}
+
 module.exports.env = (event, context, callback) => {
   assert(process.env.MY_SIMPLE === 'simple value')
 
