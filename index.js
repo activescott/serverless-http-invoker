@@ -90,7 +90,7 @@ class ServerlessInvoker {
       pathParamValues = pathParamValues.slice(1)
     }
     const pathParametersMap = {}
-    assert(httpEvent.pathParamNames.length === pathParamValues.length, `expected param names and param values to have same length, but were ${httpEvent.pathParamNames.length} === ${pathParamValues.length}`)
+    assert(httpEvent.pathParamNames.length === pathParamValues.length, `expected param names and param values to have same length, but were: \n\tnames: ${JSON.stringify(httpEvent.pathParamNames)}\n\t!==\n\tvalues: ${JSON.stringify(pathParamValues)}`)
     for (let i = 0; i < httpEvent.pathParamNames.length; i++) {
       let paramName = httpEvent.pathParamNames[i]
       pathParametersMap[paramName] = pathParamValues[i]
@@ -156,7 +156,8 @@ class ServerlessInvoker {
         // remove the surrounding bracket characters:
         pathParamNames = pathParamNames.map(p => p.replace(/^\{([^}]+)\}$/, '$1'))
         // now collect the values for the params:
-        let matcher = new RegExp('^' + method + '\\s+' + pattern.replace(/\/\{[^}]*\}/gi, '/([^/]*)'), 'i')
+        let optionalQueryStringPattern = '(?:\\?.*)?$'
+        let matcher = new RegExp('^' + method + '\\s+' + pattern.replace(/\/\{[^}]*\}/gi, '/([^/\\?]+)') + optionalQueryStringPattern, 'i')
         // console.log('path:', path, 'matcher:', matcher)
         return Object.assign(evt.http, { matcher: matcher, pathParamNames: pathParamNames })
       })

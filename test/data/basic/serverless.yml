@@ -61,3 +61,10 @@ functions:
       - http:
           path: api/with_querystring_params
           method: get
+  
+  with_querystring_params_and_pathparams:
+    handler: handler.with_querystring_params
+    events:
+      - http:
+          path: api/with_querystring_params_and_pathparams/{pathparam1}
+          method: get          
