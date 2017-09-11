@@ -77,6 +77,15 @@ describe('serverless-http-invoker', function () {
     })
   })
 
+  it('should pass greedy path params', function () {
+    let response = sls.invoke('GET api/greedy/blah/blah/blah')
+    return response.then(resp => {
+      return expect(resp.body.input).to.have.deep.property('pathParameters', {
+        'money': 'blah/blah/blah'
+      })
+    })
+  })
+
   it('should pass queryStringParameters with values when present', function () {
     let response = sls.invoke('GET api/with_querystring_params?p1=val1&p2=val2')
     return response.then(resp => {

@@ -1,6 +1,6 @@
 {
   "name": "serverless-http-invoker",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Locally invoke Serverless functions via their HTTP event as specified in Serverless.yml for testing.",
   "main": "index.js",
   "author": "scott@willeke.com",

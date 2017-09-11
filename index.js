@@ -57,7 +57,7 @@ class ServerlessInvoker {
       .then(() => this.loadServerlessEvents())
       .then(httpEvents => {
         // find the event that matches the specified httpRequest
-        let httpEvent = httpEvents.find(e => e.matcher.test(httpRequest))
+        let httpEvent = httpEvents.find(e => e.test(httpRequest))
         if (!httpEvent) {
           throw new Error(`Serverless http event not found for HTTP request "${httpRequest}".`)
         }
@@ -150,16 +150,34 @@ class ServerlessInvoker {
           path = evt.http.split(' ')[1]
         }
         let pattern = RegExp.escape(path)
-        // first collect the pathParamNames:
-        let matchPathParamNames = new RegExp(pattern.replace(/\/\{[^}]*\}/gi, '/([^/]*)'), 'gi')
+        // collect the pathParamNames:
+        //  first the "greedy" path params like {pname+} (with a '+' postfix)
+        let matchPathParamNamesPattern = pattern.replace(/\/\{[^}]*\+\}/gi, '/(.*)')
+        //  then the normal path params
+        matchPathParamNamesPattern = pattern.replace(/\/\{[^}]*\}/gi, '/([^/]*)')
+        let matchPathParamNames = new RegExp(matchPathParamNamesPattern, 'gi')
         let pathParamNames = matchPathParamNames.exec(path).slice(1) // the first element is full matched text so slice it off
         // remove the surrounding bracket characters:
         pathParamNames = pathParamNames.map(p => p.replace(/^\{([^}]+)\}$/, '$1'))
+        // remove the '+' postfix if it exists
+        pathParamNames = pathParamNames.map(p => p.endsWith('+') ? p.substring(0, p.length - 1) : p)
+        // console.log('pathParamNames:', pathParamNames, 'path:', path)
         // now collect the values for the params:
         let optionalQueryStringPattern = '(?:\\?.*)?$'
-        let matcher = new RegExp('^' + method + '\\s+' + pattern.replace(/\/\{[^}]*\}/gi, '/([^/\\?]+)') + optionalQueryStringPattern, 'i')
+        // first match greedy, then the normal ones again:
+        let matchPathParamValuesPattern = pattern.replace(/\/\{[^}]*\+\}/gi, '/(.+)')
+        matchPathParamValuesPattern = matchPathParamValuesPattern.replace(/\/\{[^}]*\}/gi, '/([^/\\?]+)')
+        let matcher = new RegExp('^' + method + '\\s+' + matchPathParamValuesPattern + optionalQueryStringPattern, 'i')
         // console.log('path:', path, 'matcher:', matcher)
-        return Object.assign(evt.http, { matcher: matcher, pathParamNames: pathParamNames })
+        return Object.assign(evt.http, {
+          matcher: matcher,
+          pathParamNames: pathParamNames,
+          test: request => {
+            const result = matcher.test(request)
+            // console.log(`${method} ${path}: ${request} == ${result} \n  pattern:${matcher.source}`)
+            return result
+          }
+        })
       })
       return f
     })

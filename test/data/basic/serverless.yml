@@ -23,7 +23,14 @@ functions:
       - http:
           path: api/hello/{greeting}
           method: get
-  
+
+  with_greedy_path_params:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/greedy/{money+}
+          method: get
+
   shorthand_path_syntax:
     handler: handler.hello
     events:
