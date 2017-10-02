@@ -35,14 +35,19 @@ class ServerlessInvoker {
     const config = {
       'servicePath': this.servicePath
     }
-    this.serverless = new Serverless(config)
-    return this.serverless.init().then(() => {
-      this.serverless.variables.populateService().then(() => {
-        this.serverless.service.setFunctionNames({})
-        this.serverless.service.mergeResourceArrays()
-        this.serverless.service.validate()
+    if (!this.serverless) {
+      const sls = new Serverless(config)
+      return sls.init().then(() => {
+        return sls.variables.populateService().then(() => {
+          sls.service.setFunctionNames({})
+          sls.service.mergeResourceArrays()
+          sls.service.validate()
+          this.serverless = sls
+        })
       })
-    })
+    } else {
+      return Promise.resolve()
+    }
   }
 
   /**

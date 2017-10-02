@@ -106,7 +106,6 @@ describe('serverless-http-invoker', function () {
   it('should match urls with query strings and path params in url', function () {
     let response = sls.invoke('GET api/with_querystring_params_and_pathparams/ppvalue?qs1=qsval1')
     return response.then(resp => {
-      console.log('resp.body.input:', resp.body.input)
       expect(resp.body.input).to.have.deep.property('queryStringParameters', {qs1: 'qsval1'})
       return expect(resp.body.input).to.have.deep.property('pathParameters', {pathparam1: 'ppvalue'})
     })
