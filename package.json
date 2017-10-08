@@ -1,10 +1,28 @@
 {
   "name": "serverless-http-invoker",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Locally invoke Serverless functions via their HTTP event as specified in Serverless.yml for testing.",
   "main": "index.js",
   "author": "scott@willeke.com",
   "license": "MIT",
+  "keywords": [
+    "serverless",
+    "serverless framework",
+    "serverless applications",
+    "serverless modules",
+    "api gateway",
+    "lambda",
+    "aws",
+    "aws lambda",
+    "amazon",
+    "amazon web services",
+    "serverless.com",
+    "mocha",
+    "test",
+    "testing",
+    "bdd",
+    "tdd"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/activescott/serverless-http-invoker.git"
