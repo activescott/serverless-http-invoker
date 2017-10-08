@@ -69,7 +69,8 @@ class ServerlessInvoker {
 
         event = Object.assign({}, event, {
           pathParameters: ServerlessInvoker.parsePathParameters(httpEvent, httpRequest),
-          queryStringParameters: ServerlessInvoker.parseQueryStringParameters(httpRequest)
+          queryStringParameters: ServerlessInvoker.parseQueryStringParameters(httpRequest),
+          httpMethod: ServerlessInvoker.parseHttpMethod(httpRequest)
         })
 
         return this.loadServerlessEnvironment().then(() => {
@@ -87,6 +88,12 @@ class ServerlessInvoker {
           })
         })
       })
+  }
+
+  static parseHttpMethod (httpRequest) {
+    const parts = httpRequest.split(' ')
+    assert(parts.length >= 1, 'expected httpRequest to be a method seperated by a space and then the request path')
+    return parts[0]
   }
 
   static parsePathParameters (httpEvent, httpRequest) {

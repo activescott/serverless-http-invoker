@@ -16,6 +16,11 @@ describe('serverless-http-invoker', function () {
     return expect(response).to.eventually.have.property('statusCode', 200)
   })
 
+  it('should have event.httpMethod', function () {
+    let response = sls.invoke('GET api/hello')
+    return expect(response).to.eventually.have.deep.nested.property('body.input.httpMethod', 'GET')
+  })
+
   it('should invoke path with params', function () {
     let response = sls.invoke('GET api/hello/world')
     return expect(response).to.eventually.have.property('statusCode', 200)
