@@ -116,4 +116,13 @@ describe('serverless-http-invoker', function () {
     })
   })
 
+  it('should marshal raw lambda exceptions back as http responses', function () {
+    let response = sls.invoke('GET api/throwWorld')
+    return expect(response).to.eventually.have.property('statusCode', 502)
+  })
+
+  it('should marshal raw handled lambda errors back as http responses', function () {
+    let response = sls.invoke('GET api/errorWorld')
+    return expect(response).to.eventually.have.property('statusCode', 502)
+  })
 })

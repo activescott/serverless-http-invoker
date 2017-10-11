@@ -74,4 +74,16 @@ functions:
     events:
       - http:
           path: api/with_querystring_params_and_pathparams/{pathparam1}
-          method: get          
+          method: get
+  throwWorld:
+    handler: handler.throwWorld
+    events:
+      - http:
+          path: api/throwWorld
+          method: get
+  errorWorld:
+    handler: handler.errorWorld
+    events:
+      - http:
+          path: api/errorWorld
+          method: get

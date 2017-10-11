@@ -16,6 +16,14 @@ module.exports.hello = (event, context, callback) => {
   callback(null, response)
 }
 
+module.exports.throwWorld = (event, context, callback) => {
+  throw new Error('throw world')
+}
+
+module.exports.errorWorld = (event, context, callback) => {
+  callback(new Error('throw world'), null)
+}
+
 module.exports.with_querystring_params = (event, context, callback) => {
   const response = {
     statusCode: 200,

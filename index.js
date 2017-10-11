@@ -85,6 +85,17 @@ class ServerlessInvoker {
               }
             }
             return response
+          }).catch(eLambdaFuncError => {
+            // In this situation API Gateway returns 502 (bad gateway) and sets the response body to `{"message": "Internal server error"}`. We are adding a bit more detail to the error.
+            const response = {
+              statusCode: 502,
+              body: {
+                message: 'Internal server error',
+                test_debug_error_message: eLambdaFuncError.toString(),
+                test_debug_error_stack: eLambdaFuncError.stack
+              }
+            }
+            return response
           })
         })
       })
