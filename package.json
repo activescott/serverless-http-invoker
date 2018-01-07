@@ -29,7 +29,7 @@
     "url": "https://github.com/activescott/serverless-http-invoker.git"
   },
   "scripts": {
-    "test": "clear; ./node_modules/.bin/mocha",
+    "test": "clear; ./node_modules/.bin/mocha --timeout 5000",
     "watch": "clear; ./node_modules/.bin/mocha -w",
     "lint": "./node_modules/.bin/standard './index.js' './test/test.js'",
     "pretest": "npm run lint"
