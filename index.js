@@ -22,7 +22,6 @@ class ServerlessInvoker {
   findServicePath () {
     let dir = process.cwd()
     while (dir !== '/' && !fs.existsSync(path.join(dir, 'serverless.yml'))) {
-      console.log('dir:', dir)
       dir = path.dirname(dir)
     }
     if (dir === '/') {
@@ -37,6 +36,7 @@ class ServerlessInvoker {
     }
     if (!this.serverless) {
       const sls = new Serverless(config)
+      // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
       return sls.init().then(() => {
         return sls.variables.populateService().then(() => {
           sls.service.setFunctionNames({})
@@ -67,7 +67,10 @@ class ServerlessInvoker {
           throw new Error(`Serverless http event not found for HTTP request "${httpRequest}".`)
         }
 
+        const parsedPath = ServerlessInvoker.parsePath(httpRequest)
         event = Object.assign({}, event, {
+          path: parsedPath,
+          resource: parsedPath,
           pathParameters: ServerlessInvoker.parsePathParameters(httpEvent, httpRequest),
           queryStringParameters: ServerlessInvoker.parseQueryStringParameters(httpRequest),
           httpMethod: ServerlessInvoker.parseHttpMethod(httpRequest)
@@ -125,6 +128,11 @@ class ServerlessInvoker {
     const myURL = new URL('https://fakehost.com/' + requestUrl.split(' ')[1])
     const search = myURL.search.length > 0 ? myURL.search.slice(1) : myURL.search
     return querystring.parse(search)
+  }
+
+  static parsePath (requestUrl) {
+    const myURL = new URL('https://fakehost.com/' + requestUrl.split(' ')[1])
+    return myURL.pathname
   }
 
   loadServerlessEnvironment () {
