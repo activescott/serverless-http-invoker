@@ -126,12 +126,12 @@ class ServerlessInvoker {
 
   static parseQueryStringParameters (requestUrl) {
     const myURL = url.parse('https://fakehost.com/' + requestUrl.split(' ')[1], true)
-    const search = myURL.search.length > 0 ? myURL.search.slice(1) : myURL.search
+    const search = myURL.search && myURL.search.length > 0 ? myURL.search.slice(1) : myURL.search
     return querystring.parse(search)
   }
 
   static parsePath (requestUrl) {
-    const myURL = new URL('https://fakehost.com/' + requestUrl.split(' ')[1])
+    const myURL = url.parse('https://fakehost.com/' + requestUrl.split(' ')[1])
     return myURL.pathname
   }
 
