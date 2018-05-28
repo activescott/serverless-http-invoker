@@ -35,8 +35,8 @@
     "pretest": "npm run lint"
   },
   "dependencies": {
-    "lambda-wrapper": "^0.2.1",
-    "serverless": "^1.18.0"
+    "lambda-wrapper": "^0.3.0",
+    "serverless": "^1.27.3"
   },
   "devDependencies": {
     "chai": "^4.1.0",

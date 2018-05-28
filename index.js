@@ -40,7 +40,7 @@ class ServerlessInvoker {
       return sls.init().then(() => {
         return sls.variables.populateService().then(() => {
           sls.service.setFunctionNames({})
-          sls.service.mergeResourceArrays()
+          sls.service.mergeArrays()
           sls.service.validate()
           this.serverless = sls
         })
