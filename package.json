@@ -1,6 +1,6 @@
 {
   "name": "serverless-http-invoker",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Locally invoke Serverless functions via their HTTP event as specified in Serverless.yml for testing.",
   "main": "index.js",
   "author": "scott@willeke.com",
@@ -23,7 +23,9 @@
     "bdd",
     "tdd"
   ],
-  "engines": { "node": ">=6" },
+  "engines": {
+    "node": ">=6"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/activescott/serverless-http-invoker.git"
