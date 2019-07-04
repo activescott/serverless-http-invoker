@@ -43,7 +43,14 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^3.4.2",
+    "mocha": "^6.1.4",
     "standard": "^10.0.2"
+  },
+  "resolutions": {
+    "lodash": "^4.17.11",
+    "js-yaml": "^3.13.1",
+    "url-parse": "^1.4.3",
+    "https-proxy-agent": "^2.2.0",
+    "mime": "^1.4.1"
   }
 }
