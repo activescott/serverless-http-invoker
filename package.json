@@ -33,7 +33,8 @@
   "scripts": {
     "test": "clear; ./node_modules/.bin/mocha --timeout 5000",
     "watch": "clear; ./node_modules/.bin/mocha -w",
-    "lint": "./node_modules/.bin/standard './index.js' './test/test.js'",
+    "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "pretest": "npm run lint"
   },
   "dependencies": {
@@ -43,7 +44,14 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^3.4.2",
-    "standard": "^10.0.2"
+    "mocha": "^6.1.4",
+    "prettier": "^1.18.2"
+  },
+  "resolutions": {
+    "lodash": "^4.17.11",
+    "js-yaml": "^3.13.1",
+    "url-parse": "^1.4.3",
+    "https-proxy-agent": "^2.2.0",
+    "mime": "^1.4.1"
   }
 }

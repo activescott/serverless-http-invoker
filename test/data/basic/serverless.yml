@@ -6,8 +6,8 @@ provider:
   stage: dev
 
   environment:
-    MY_SIMPLE: 'simple value'
-    MY_DYNAMIC: '${self:provider.stage}'
+    MY_SIMPLE: "simple value"
+    MY_DYNAMIC: "${self:provider.stage}"
 
 functions:
   hello:
@@ -35,7 +35,7 @@ functions:
     handler: handler.hello
     events:
       - http: GET api/shorthand
-  
+
   malformed_http_event:
     handler: handler.hello
     events:
@@ -56,19 +56,19 @@ functions:
           method: get
 
   postit:
-      handler: handler.postit
-      events:
-        - http:
-            path: api/postit
-            method: POST
-  
+    handler: handler.postit
+    events:
+      - http:
+          path: api/postit
+          method: POST
+
   with_querystring_params:
     handler: handler.with_querystring_params
     events:
       - http:
           path: api/with_querystring_params
           method: get
-  
+
   with_querystring_params_and_pathparams:
     handler: handler.with_querystring_params
     events:
