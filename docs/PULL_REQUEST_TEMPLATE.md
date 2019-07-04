@@ -30,4 +30,3 @@ Examples:
 - [ ] Write tests
 - [ ] Fix linting errors
 - [ ] All tests pass on our CI Server: https://travis-ci.org/activescott/serverless-http-invoker
-

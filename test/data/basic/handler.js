@@ -1,14 +1,14 @@
-'use strict'
-const assert = require('assert')
+"use strict"
+const assert = require("assert")
 
 module.exports.hello = (event, context, callback) => {
   const response = {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
+      message: "Go Serverless v1.0! Your function executed successfully!",
       input: event
     })
   }
@@ -17,21 +17,21 @@ module.exports.hello = (event, context, callback) => {
 }
 
 module.exports.throwWorld = (event, context, callback) => {
-  throw new Error('throw world')
+  throw new Error("throw world")
 }
 
 module.exports.errorWorld = (event, context, callback) => {
-  callback(new Error('throw world'), null)
+  callback(new Error("throw world"), null)
 }
 
 module.exports.with_querystring_params = (event, context, callback) => {
   const response = {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      message: 'QueryStringParams on prop',
+      message: "QueryStringParams on prop",
       queryStringParameters: event.queryStringParameters,
       input: event
     })
@@ -41,15 +41,15 @@ module.exports.with_querystring_params = (event, context, callback) => {
 }
 
 module.exports.env = (event, context, callback) => {
-  assert(process.env.MY_SIMPLE === 'simple value')
+  assert(process.env.MY_SIMPLE === "simple value")
 
   const response = {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      message: 'process.env.MY_SIMPLE==' + process.env.MY_SIMPLE,
+      message: "process.env.MY_SIMPLE==" + process.env.MY_SIMPLE,
       input: event
     })
   }
@@ -61,10 +61,10 @@ module.exports.postit = (event, context, callback) => {
   const response = {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      message: 'postit:' + event.body
+      message: "postit:" + event.body
     })
   }
 
