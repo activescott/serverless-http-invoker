@@ -1,8 +1,7 @@
 [![npm version](https://badge.fury.io/js/serverless-http-invoker.svg)](https://badge.fury.io/js/serverless-http-invoker)
-[![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg?branch=master)](https://travis-ci.org/activescott/serverless-http-invoker)
-[![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg?branch=misc-updates)](https://coveralls.io/github/activescott/serverless-http-invoker?branch=misc-updates)
+[![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg)](https://travis-ci.org/activescott/serverless-http-invoker)
+[![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg)](https://coveralls.io/github/activescott/serverless-http-invoker)
 [![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker)
 
 # serverless-http-invoker
@@ -19,6 +18,7 @@ It makes it easy to test not only your handler logic, but also ensures that you 
 - [Features](#features)
 - [Contributing 🤝](#contributing-🤝)
 - [Show your support](#show-your-support)
+- [Deploying to NPM](#deploying-to-npm)
 - [License 📝](#license-📝)
 
 <!-- /TOC -->
@@ -46,7 +46,7 @@ Many more examples and exaustive list of what is supported in [the tests](https:
 
 ## Prerequisites / Usage Requirements
 
-Requires Node.js latest, LTS, v10, and v6 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+Requires Node.js latest, LTS, or v6 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
 
 Requires Serverless Framework v1.x.
 If you are new to the Serverless Framework, check out the [Serverless Framework Getting Started Guide](https://serverless.com/framework/docs/getting-started/).
@@ -68,6 +68,18 @@ This is a community project. We invite your participation through issues and pul
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+## Deploying to NPM
+
+To deploy a pre-release version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and POSTFIXED with an NPM distribution tag. For example:
+
+    git tag v1.0.1-beta
+
+To deploy a production version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and WITHOUT a NPM distribution tag. For example:
+
+    git tag v1.0.1
+
+In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
 
 ## License 📝
 
