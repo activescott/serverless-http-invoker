@@ -18,7 +18,7 @@ It makes it easy to test not only your handler logic, but also ensures that you 
 - [Features](#features)
 - [Contributing 🤝](#contributing-🤝)
 - [Show your support](#show-your-support)
-- [Deploying to NPM](#deploying-to-npm)
+- [Release Process (Deploying to NPM)](#release-process-deploying-to-npm)
 - [License 📝](#license-📝)
 
 <!-- /TOC -->
@@ -69,13 +69,13 @@ This is a community project. We invite your participation through issues and pul
 
 Give a ⭐️ if this project helped you!
 
-## Deploying to NPM
+## Release Process (Deploying to NPM)
 
-To deploy a pre-release version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and POSTFIXED with an NPM distribution tag. For example:
+To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a `v` and **postfixed with** an NPM distribution tag of `next`. For example:
 
-    git tag v1.0.1-beta
+    git tag v1.0.1-next
 
-To deploy a production version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and WITHOUT a NPM distribution tag. For example:
+To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and **WITHOUT** a NPM distribution tag. For example:
 
     git tag v1.0.1
 
