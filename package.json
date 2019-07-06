@@ -38,7 +38,6 @@
     "watch": "./node_modules/.bin/mocha -w",
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "pretest": "yarn run lint",
     "coverage": "yarn run test && nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {

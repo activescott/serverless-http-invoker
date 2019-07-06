@@ -8,21 +8,21 @@ node_js:
 cache: yarn
 script:
   - echo "Running tests against $(node -v) ..."
-  - npm run lint
-  - npm run test
+  - yarn lint
+  - yarn test
 jobs:
   include:
     - stage: Report Coverage
       node_js: "node"
       script: echo "Running coverage report ..."
-      after_success: npm run coverage # in after_success because we don't wan't to fail the build if this failed.
+      after_success: yarn coverage # in after_success because we don't wan't to fail the build if this failed.
     - stage: Deploy NPM
       node_js: "node"
       script: echo "Deploying to npm ..." # explicitly having a tag here also prevents default script (i.e. tests for node_js), which have already run in prior stage: https://docs.travis-ci.com/user/build-stages/#build-stages-and-deployments
       before_deploy: # NOTE: only be triggered if Travis CI is actually deploying; https://docs.travis-ci.com/user/deployment/npm/#running-commands-before-and-after-deploy
         - |
-          echo "Running npm version --no-git-tag-version $TRAVIS_TAG ..."
-          npm version --no-git-tag-version $TRAVIS_TAG
+          echo "Running yarn version --no-git-tag-version $TRAVIS_TAG ..."
+          yarn version --no-git-tag-version $TRAVIS_TAG
       deploy:
         # production releases
         # NOTE: Travis CI npm provider doesn't fail the build when deployment fails.

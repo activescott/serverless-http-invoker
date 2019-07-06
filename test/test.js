@@ -170,7 +170,7 @@ describe("serverless-http-invoker", function() {
     return expect(response).to.eventually.have.property("statusCode", 502)
   })
 
-  it("should error if path isn't found", async function() {
+  it("should error if path isn't found", function() {
     const response = sls.invoke("GET api/DOES_NOT_EXIST")
     return expect(response).to.eventually.be.rejectedWith(
       /^Serverless http event not found for HTTP request/
