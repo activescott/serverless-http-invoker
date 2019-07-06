@@ -48,6 +48,5 @@ jobs:
           on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
             tags: true
             repo: activescott/serverless-http-invoker
-            branch: master
             # only if the tag that triggered had a NPM/semver tag postfix:
             condition: '[[ -n "$VER_TAG" ]]'
