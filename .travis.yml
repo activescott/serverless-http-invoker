@@ -20,8 +20,8 @@ jobs:
       script: echo "Deploying to npm ..." # explicitly having a tag here also prevents default script (i.e. tests for node_js), which have already run in prior stage: https://docs.travis-ci.com/user/build-stages/#build-stages-and-deployments
       before_deploy: # NOTE: only be triggered if Travis CI is actually deploying; https://docs.travis-ci.com/user/deployment/npm/#running-commands-before-and-after-deploy
         - |
-          echo "Running yarn version --no-git-tag-version $TRAVIS_TAG ..."
-          yarn version --no-git-tag-version $TRAVIS_TAG
+          echo "Running yarn version --new-version --no-git-tag-version $TRAVIS_TAG ..."
+          yarn version --new-version --no-git-tag-version $TRAVIS_TAG
       deploy:
         # production releases
         - provider: npm
