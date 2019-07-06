@@ -27,7 +27,7 @@ jobs:
         - provider: npm
           email: scott@willeke.com
           api_key:
-            secure: glWsZuRuVlaYBpGtDJYGeWpABU/In7tesyJvVkbhW1sKhkO510uqrAWfJh0XiLhYMJrS1a2zeCIuBCdJE9cDaKF3zfWQkmMjOdoctAR+X7FoPh/4QP12STbK9x5TNk62b/kjJVCkS0udaOLnSf1LEXLPVqzYEt1OqaWFrFRIFWtiKMaMAMHKCT3qcHjar/TqYecKzxMo1tpSSA4KQ20uYoDnMjGAVhtESegM69e360MVsHYKANN5lJbM9MBap1UihFfMLPBq2rVu7dClkrKW9OKbFD7Zrnn0yX52PGmUm+MzZASZOlyJFs8ssqrMAlrurhoM59264W9qYBPcOH8464aK6AvevoFRSYLORIQ5rlWaLTpIi1eo+S4kzaEhZWSv0nmQhRex+RnpznCfvpG/L0O/2YchiVps3CW5NGJ5dkJIBi8uC+WQ2278hONLgOmVTbpAPrRmfH4+2+BAHYQjOeBmVxbb+mrpT5IQsPpE9Of/Ev/62CeTkTDqOX+EeLc6CsleNRvAqvPdg9UV9s/2wV697L+HA4dOtWf700nQ6ZC3QSWgy38+3S/rj204wk3Osu/GJUh7RTvpNJWCOMnEl1YtndPtrez21Ye4Jj1HGMDI192wKeByeHkbKwISt6iRapQ0uQkCzAvBGXJu3BStLjaqOgt0TWmPGWhHlA00SZg=
+            secure: ua8Ei69/C08jIDQr2WbJAuS+5wERH4WUP9BHKrl/MSBFdtbSiUDkwZ8v80phvDGjPtejhpk1cbkwoZ9UwONnxrJhSdEqkrtlopN2YGLjKnvU3S8GzkVMq9UrY9DGnyEjsRXc5Jh48KImX5QwVsgQQnyvkpjqcQofD5hvuvBi7KG1O8hsNQzG1qmG+9J54scXq2BK9U+i+oPYsd4VrnRwUlTSpNyaZIVZHZmmdjdO+/zYPJvopapn52EKuBeuXmdRrQA2NM8tkkxzNjvZchcBn6yjKbjRA5Uwz9vQ5KEeX4snVsa3fT0ZNy4rNkiQxCXaq0K1oItOSk3QxDbvfI4FSkp2y/hkdMPyXDjg9reZOYvDzUe7BNFaDEw0MqXkjOwmRqfd9SMcNB1a1D/1gnFJ8fLLjfixwiPMTWtQwX4T1BGEWnuSFjvo9ofUr54507m6Rj+ZFgyykh3r/uwIfgsztW8xnnzEHDAPSH6nfWyGiD+jEHRcKvrr3Q1UnxgE7IQDIxINynyu0/dX8Sq4afkZL6zIv1TWIJznho1TCoOXGoAJe/rzfOlkM5TllMnYok+2OISDnLoJve3ABGKbuv7Fxt+9lebNWAN/WuydYep21jWklSxUzuEum5OGa1PGD5wnGWDXVdmB0WJ9uPZJUJ6qf8fkolqEd+ocDt2vf82awF0=
           skip_cleanup: true # because we use npm version in before_deploy to edit the package version
           tag: latest # latest==production: https://docs.npmjs.com/adding-dist-tags-to-packages
           on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
@@ -40,7 +40,7 @@ jobs:
         - provider: npm
           email: scott@willeke.com
           api_key:
-            secure: glWsZuRuVlaYBpGtDJYGeWpABU/In7tesyJvVkbhW1sKhkO510uqrAWfJh0XiLhYMJrS1a2zeCIuBCdJE9cDaKF3zfWQkmMjOdoctAR+X7FoPh/4QP12STbK9x5TNk62b/kjJVCkS0udaOLnSf1LEXLPVqzYEt1OqaWFrFRIFWtiKMaMAMHKCT3qcHjar/TqYecKzxMo1tpSSA4KQ20uYoDnMjGAVhtESegM69e360MVsHYKANN5lJbM9MBap1UihFfMLPBq2rVu7dClkrKW9OKbFD7Zrnn0yX52PGmUm+MzZASZOlyJFs8ssqrMAlrurhoM59264W9qYBPcOH8464aK6AvevoFRSYLORIQ5rlWaLTpIi1eo+S4kzaEhZWSv0nmQhRex+RnpznCfvpG/L0O/2YchiVps3CW5NGJ5dkJIBi8uC+WQ2278hONLgOmVTbpAPrRmfH4+2+BAHYQjOeBmVxbb+mrpT5IQsPpE9Of/Ev/62CeTkTDqOX+EeLc6CsleNRvAqvPdg9UV9s/2wV697L+HA4dOtWf700nQ6ZC3QSWgy38+3S/rj204wk3Osu/GJUh7RTvpNJWCOMnEl1YtndPtrez21Ye4Jj1HGMDI192wKeByeHkbKwISt6iRapQ0uQkCzAvBGXJu3BStLjaqOgt0TWmPGWhHlA00SZg=
+            secure: ua8Ei69/C08jIDQr2WbJAuS+5wERH4WUP9BHKrl/MSBFdtbSiUDkwZ8v80phvDGjPtejhpk1cbkwoZ9UwONnxrJhSdEqkrtlopN2YGLjKnvU3S8GzkVMq9UrY9DGnyEjsRXc5Jh48KImX5QwVsgQQnyvkpjqcQofD5hvuvBi7KG1O8hsNQzG1qmG+9J54scXq2BK9U+i+oPYsd4VrnRwUlTSpNyaZIVZHZmmdjdO+/zYPJvopapn52EKuBeuXmdRrQA2NM8tkkxzNjvZchcBn6yjKbjRA5Uwz9vQ5KEeX4snVsa3fT0ZNy4rNkiQxCXaq0K1oItOSk3QxDbvfI4FSkp2y/hkdMPyXDjg9reZOYvDzUe7BNFaDEw0MqXkjOwmRqfd9SMcNB1a1D/1gnFJ8fLLjfixwiPMTWtQwX4T1BGEWnuSFjvo9ofUr54507m6Rj+ZFgyykh3r/uwIfgsztW8xnnzEHDAPSH6nfWyGiD+jEHRcKvrr3Q1UnxgE7IQDIxINynyu0/dX8Sq4afkZL6zIv1TWIJznho1TCoOXGoAJe/rzfOlkM5TllMnYok+2OISDnLoJve3ABGKbuv7Fxt+9lebNWAN/WuydYep21jWklSxUzuEum5OGa1PGD5wnGWDXVdmB0WJ9uPZJUJ6qf8fkolqEd+ocDt2vf82awF0=
           skip_cleanup: true # because we use npm version in before_deploy to edit the package version
           tag: next
           on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on

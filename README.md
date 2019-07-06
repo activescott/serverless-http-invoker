@@ -81,9 +81,9 @@ To deploy a **production** version to NPM, tag a commit in master branch with a 
 
 In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
 
-NOTE: To get the tag to GitHub push it with `git push --tags`
+NOTE: To get the tag to GitHub push it with `git push --tags`.
 
-NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-next` and then push it with `git push --tags`
+NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-next` and then push it with `git push --tags`. Or do the abbreviated from by force-pushing it like `git push --tags -f`.
 
 ## License 📝
 
