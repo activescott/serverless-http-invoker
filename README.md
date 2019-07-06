@@ -1,6 +1,7 @@
 [![npm version](https://badge.fury.io/js/serverless-http-invoker.svg)](https://badge.fury.io/js/serverless-http-invoker)
 [![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg?branch=master)](https://travis-ci.org/activescott/serverless-http-invoker)
+[![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg?branch=misc-updates)](https://coveralls.io/github/activescott/serverless-http-invoker?branch=misc-updates)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker)
 

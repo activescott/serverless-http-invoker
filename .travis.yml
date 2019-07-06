@@ -7,7 +7,7 @@ node_js:
   #- "9" # oddly new versions of mocha don't work on node 9, but do work on 6, 8, & 10+: https://travis-ci.org/activescott/serverless-http-invoker/jobs/554058213#L463
 cache: yarn
 script:
-  - echo "Running tests against $(node -v) ..."
+  - echo "Running with node version $(node -v) ..."
   - yarn lint
   - yarn test
 jobs:
