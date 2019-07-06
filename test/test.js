@@ -7,9 +7,12 @@ const expect = require("chai").expect
 const ServerlessInvoker = require("../index")
 
 const path = require("path")
-
+let sls = null
 describe("serverless-http-invoker", function() {
-  let sls = new ServerlessInvoker(path.join(__dirname, "data/basic"))
+  beforeEach(function() {
+    process.chdir(path.join(__dirname, "data/basic"))
+    sls = new ServerlessInvoker(path.join(__dirname, "data/basic"))
+  })
 
   it("should invoke simple path", function() {
     let response = sls.invoke("GET api/hello")
@@ -158,12 +161,37 @@ describe("serverless-http-invoker", function() {
   })
 
   it("should marshal raw lambda exceptions back as http responses", function() {
-    let response = sls.invoke("GET api/throwWorld")
+    const response = sls.invoke("GET api/throwWorld")
     return expect(response).to.eventually.have.property("statusCode", 502)
   })
 
   it("should marshal raw handled lambda errors back as http responses", function() {
-    let response = sls.invoke("GET api/errorWorld")
+    const response = sls.invoke("GET api/errorWorld")
     return expect(response).to.eventually.have.property("statusCode", 502)
+  })
+
+  it("should error if path isn't found", async function() {
+    const response = sls.invoke("GET api/DOES_NOT_EXIST")
+    return expect(response).to.eventually.be.rejectedWith(
+      /^Serverless http event not found for HTTP request/
+    )
+  })
+
+  it("should try to find service path in same dir", function() {
+    const localSls = new ServerlessInvoker()
+    expect(localSls.servicePath).to.match(/test\/data\/basic$/)
+  })
+
+  it("should try to find service path in parent dir", function() {
+    process.chdir(path.join(__dirname, "data/basic/subdir"))
+    const localSls = new ServerlessInvoker()
+    expect(localSls.servicePath).to.match(/test\/data\/basic$/)
+  })
+
+  it("should fail if serverless.yml not found", function() {
+    process.chdir(path.join(__dirname, "data/no-serverless-found"))
+    expect(() => new ServerlessInvoker()).to.throw(
+      /^Cannot find serverless.yml. Started search in working directory/
+    )
   })
 })
