@@ -71,15 +71,19 @@ Give a ⭐️ if this project helped you!
 
 ## Release Process (Deploying to NPM)
 
-To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a `v` and **postfixed with** an NPM distribution tag of `next`. For example:
+To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag and **postfixed with** an NPM distribution tag of `next`. For example:
 
-    git tag v1.0.1-next
+    git tag 1.0.1-next
 
-To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and **WITHOUT** a NPM distribution tag. For example:
+To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag **WITHOUT** a NPM distribution tag. For example:
 
-    git tag v1.0.1
+    git tag 1.0.1
 
 In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
+
+NOTE: To get the tag to GitHub push it with `git push --tags`
+
+NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-next` and then push it with `git push --tags`
 
 ## License 📝
 

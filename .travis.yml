@@ -35,7 +35,7 @@ jobs:
             repo: activescott/serverless-http-invoker
             branch: master
             # only if the git tag that triggered this build was "vD.D.D" *WITHOUT* an NPM distribution tag postfix like `v1.0.1`
-            condition: '$TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$'
+            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$'
         # tagged prereleases
         - provider: npm
           email: scott@willeke.com
@@ -47,4 +47,4 @@ jobs:
             tags: true
             repo: activescott/serverless-http-invoker
             # only if the git tag that triggered this build was "vD.D.D" *WITH* an NPM distribution tag postfix of `next` like `v1.0.1-next`
-            condition: '$TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-next)$'
+            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(-next)$'
