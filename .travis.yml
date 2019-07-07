@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "node"
   - "lts/*"
-  - "6" # per https://github.com/activescott/serverless-http-invoker/issues/5
+  - "10" # To keep v10 support alive even when lts shifts to a later version
+  #- "6" # per https://github.com/activescott/serverless-http-invoker/issues/5; Dropping support for nodejs v6.x. v0.8.6 can still be used (as shown at https://travis-ci.org/activescott/serverless-http-invoker/jobs/389131287)
   #- "9" # oddly new versions of mocha don't work on node 9, but do work on 6, 8, & 10+: https://travis-ci.org/activescott/serverless-http-invoker/jobs/554058213#L463
 cache: yarn
 script:

@@ -47,7 +47,9 @@ An exhaustive list of what is supported in Some of the more common use cases are
 
 ## Prerequisites / Usage Requirements
 
-Requires Node.js latest, LTS, or v6 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+Requires Node.js latest, LTS, and v10 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+
+If you need Node.js v6.x - v9.x support you can use [serverless-http-invoker@0.8.6](https://www.npmjs.com/package/serverless-http-invoker/v/0.8.6).
 
 Requires Serverless Framework v1.x.
 If you are new to the Serverless Framework, check out the [Serverless Framework Getting Started Guide](https://serverless.com/framework/docs/getting-started/).
