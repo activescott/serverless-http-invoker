@@ -42,7 +42,8 @@ The test above is a test of a Serverless function defined in Serverless.yml as f
               path: api/hello
               method: get
 
-Many more examples and exaustive list of what is supported in [the tests](https://github.com/activescott/serverless-http-invoker/blob/master/test/test.js). Some additional real-world examples are demonstrated in the [sheetmonkey-server project](https://github.com/activescott/sheetmonkey-server). See [PluginsHandler.js](https://github.com/activescott/sheetmonkey-server/blob/master/server/test/PluginsHandler.js) and [PluginAuthHandler.js](https://github.com/activescott/sheetmonkey-server/blob/master/server/test/PluginAuthHandler.js) among others.
+Some of the more common use cases are demonstrated in the basic tests at [the basic test cases](test/basic.js).
+An exhaustive list of what is supported in Some of the more common use cases are demonstrated in the basic tests at [the comprehensive test cases](test/comprehensive.js).
 
 ## Prerequisites / Usage Requirements
 

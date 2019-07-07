@@ -1,0 +1,95 @@
+service: basic-example # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-west-2
+
+  environment:
+    MY_SIMPLE: "simple value"
+    MY_DYNAMIC: "${self:provider.stage}"
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/hello
+          method: get
+
+  with_params:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/hello/{greeting}
+          method: get
+
+  with_greedy_path_params:
+    handler: handler.hello
+    events:
+      - http:
+          path: api/greedy/{money+}
+          method: get
+
+  shorthand_path_syntax:
+    handler: handler.hello
+    events:
+      - http: GET api/shorthand
+
+  malformed_http_event:
+    handler: handler.hello
+    events:
+      - http:
+        path: note_how_path_isnt_indented_enough
+        method: get
+
+  path_with_multiple_params:
+    handler: handler.hello
+    events:
+      - http: GET api/res1/{res1ID}/res2/{res2ID}
+
+  env:
+    handler: handler.env
+    events:
+      - http:
+          path: api/env
+          method: get
+
+  postit:
+    handler: handler.postit
+    events:
+      - http:
+          path: api/postit
+          method: POST
+
+  with_querystring_params:
+    handler: handler.with_querystring_params
+    events:
+      - http:
+          path: api/with_querystring_params
+          method: get
+
+  with_querystring_params_and_pathparams:
+    handler: handler.with_querystring_params
+    events:
+      - http:
+          path: api/with_querystring_params_and_pathparams/{pathparam1}
+          method: get
+  throwWorld:
+    handler: handler.throwWorld
+    events:
+      - http:
+          path: api/throwWorld
+          method: get
+  errorWorld:
+    handler: handler.errorWorld
+    events:
+      - http:
+          path: api/errorWorld
+          method: get
+  callback:
+    handler: handler.callback
+    events:
+      - http:
+          path: api/callback
+          method: get
