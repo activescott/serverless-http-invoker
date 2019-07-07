@@ -2,7 +2,49 @@ language: node_js
 node_js:
   - "node"
   - "lts/*"
-  - "10"
   - "6" # per https://github.com/activescott/serverless-http-invoker/issues/5
   #- "9" # oddly new versions of mocha don't work on node 9, but do work on 6, 8, & 10+: https://travis-ci.org/activescott/serverless-http-invoker/jobs/554058213#L463
 cache: yarn
+script:
+  - echo "Running with node version $(node -v) ..."
+  - yarn lint
+  - yarn test
+jobs:
+  include:
+    - stage: Report Coverage
+      node_js: "node"
+      script: echo "Running coverage report ..."
+      after_success: yarn coverage # in after_success because we don't want to fail the build if this failed.
+    - stage: Deploy NPM
+      node_js: "node"
+      script: echo "Deploying to npm ..." # explicitly having a tag here also prevents default script (i.e. tests for node_js), which have already run in prior stage: https://docs.travis-ci.com/user/build-stages/#build-stages-and-deployments
+      before_deploy: # NOTE: only be triggered if Travis CI is actually deploying; https://docs.travis-ci.com/user/deployment/npm/#running-commands-before-and-after-deploy
+        - |
+          echo "Running yarn version --new-version --no-git-tag-version $TRAVIS_TAG ..."
+          yarn version --new-version --no-git-tag-version $TRAVIS_TAG
+      deploy:
+        # production releases
+        - provider: npm
+          email: scott@willeke.com
+          api_key:
+            secure: glWsZuRuVlaYBpGtDJYGeWpABU/In7tesyJvVkbhW1sKhkO510uqrAWfJh0XiLhYMJrS1a2zeCIuBCdJE9cDaKF3zfWQkmMjOdoctAR+X7FoPh/4QP12STbK9x5TNk62b/kjJVCkS0udaOLnSf1LEXLPVqzYEt1OqaWFrFRIFWtiKMaMAMHKCT3qcHjar/TqYecKzxMo1tpSSA4KQ20uYoDnMjGAVhtESegM69e360MVsHYKANN5lJbM9MBap1UihFfMLPBq2rVu7dClkrKW9OKbFD7Zrnn0yX52PGmUm+MzZASZOlyJFs8ssqrMAlrurhoM59264W9qYBPcOH8464aK6AvevoFRSYLORIQ5rlWaLTpIi1eo+S4kzaEhZWSv0nmQhRex+RnpznCfvpG/L0O/2YchiVps3CW5NGJ5dkJIBi8uC+WQ2278hONLgOmVTbpAPrRmfH4+2+BAHYQjOeBmVxbb+mrpT5IQsPpE9Of/Ev/62CeTkTDqOX+EeLc6CsleNRvAqvPdg9UV9s/2wV697L+HA4dOtWf700nQ6ZC3QSWgy38+3S/rj204wk3Osu/GJUh7RTvpNJWCOMnEl1YtndPtrez21Ye4Jj1HGMDI192wKeByeHkbKwISt6iRapQ0uQkCzAvBGXJu3BStLjaqOgt0TWmPGWhHlA00SZg=
+          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
+          tag: latest # latest==production: https://docs.npmjs.com/adding-dist-tags-to-packages
+          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
+            tags: true
+            repo: activescott/serverless-http-invoker
+            branch: master
+            # only if the git tag that triggered this build was "vD.D.D" *WITHOUT* an NPM distribution tag postfix like `v1.0.1`
+            condition: '$TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$'
+        # tagged prereleases
+        - provider: npm
+          email: scott@willeke.com
+          api_key:
+            secure: glWsZuRuVlaYBpGtDJYGeWpABU/In7tesyJvVkbhW1sKhkO510uqrAWfJh0XiLhYMJrS1a2zeCIuBCdJE9cDaKF3zfWQkmMjOdoctAR+X7FoPh/4QP12STbK9x5TNk62b/kjJVCkS0udaOLnSf1LEXLPVqzYEt1OqaWFrFRIFWtiKMaMAMHKCT3qcHjar/TqYecKzxMo1tpSSA4KQ20uYoDnMjGAVhtESegM69e360MVsHYKANN5lJbM9MBap1UihFfMLPBq2rVu7dClkrKW9OKbFD7Zrnn0yX52PGmUm+MzZASZOlyJFs8ssqrMAlrurhoM59264W9qYBPcOH8464aK6AvevoFRSYLORIQ5rlWaLTpIi1eo+S4kzaEhZWSv0nmQhRex+RnpznCfvpG/L0O/2YchiVps3CW5NGJ5dkJIBi8uC+WQ2278hONLgOmVTbpAPrRmfH4+2+BAHYQjOeBmVxbb+mrpT5IQsPpE9Of/Ev/62CeTkTDqOX+EeLc6CsleNRvAqvPdg9UV9s/2wV697L+HA4dOtWf700nQ6ZC3QSWgy38+3S/rj204wk3Osu/GJUh7RTvpNJWCOMnEl1YtndPtrez21Ye4Jj1HGMDI192wKeByeHkbKwISt6iRapQ0uQkCzAvBGXJu3BStLjaqOgt0TWmPGWhHlA00SZg=
+          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
+          tag: next
+          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
+            tags: true
+            repo: activescott/serverless-http-invoker
+            # only if the git tag that triggered this build was "vD.D.D" *WITH* an NPM distribution tag postfix of `next` like `v1.0.1-next`
+            condition: '$TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-next)$'

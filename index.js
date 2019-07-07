@@ -25,7 +25,9 @@ class ServerlessInvoker {
       dir = path.dirname(dir)
     }
     if (dir === "/") {
-      throw new Error("cannot find serverless.yml")
+      throw new Error(
+        `Cannot find serverless.yml. Started search in working directory ${process.cwd()}`
+      )
     }
     return dir
   }
@@ -34,20 +36,16 @@ class ServerlessInvoker {
     const config = {
       servicePath: this.servicePath
     }
-    if (!this.serverless) {
-      const sls = new Serverless(config)
-      // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
-      return sls.init().then(() => {
-        return sls.variables.populateService().then(() => {
-          sls.service.setFunctionNames({})
-          sls.service.mergeArrays()
-          sls.service.validate()
-          this.serverless = sls
-        })
+    const sls = new Serverless(config)
+    // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
+    return sls.init().then(() => {
+      return sls.variables.populateService().then(() => {
+        sls.service.setFunctionNames({})
+        sls.service.mergeArrays()
+        sls.service.validate()
+        this.serverless = sls
       })
-    } else {
-      return Promise.resolve()
-    }
+    })
   }
 
   /**
@@ -124,7 +122,7 @@ class ServerlessInvoker {
   }
 
   static parsePathParameters(httpEvent, httpRequest) {
-    let pathParamValues = httpEvent.matcher.exec(httpRequest) || []
+    let pathParamValues = httpEvent.matcher.exec(httpRequest)
     if (pathParamValues.length > 0) {
       pathParamValues = pathParamValues.slice(1)
     }
@@ -184,7 +182,7 @@ class ServerlessInvoker {
       .getAllFunctions()
       .map(fname => {
         let funcObj = this.serverless.service.getFunction(fname)
-        let events = this.serverless.service.getAllEventsInFunction(fname) || []
+        let events = this.serverless.service.getAllEventsInFunction(fname)
         let f = {
           name: fname,
           handler: funcObj.handler,
