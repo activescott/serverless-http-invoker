@@ -1,14 +1,14 @@
 "use strict"
-require("./support/setup.js")
+require("../../test/support/setup")
 const path = require("path")
 const expect = require("chai").expect
-const ServerlessInvoker = require("../index")
+const ServerlessInvoker = require("../../index")
 
 let sls = null
 
 beforeEach(function() {
   process.chdir(path.join(__dirname))
-  sls = new ServerlessInvoker(path.join(__dirname, "data/comprehensive"))
+  sls = new ServerlessInvoker(path.join(__dirname))
 })
 
 it("should work with callbacks too", function() {
@@ -151,19 +151,19 @@ it("should error if path isn't found", function() {
 })
 
 it("should try to find service path in same dir", function() {
-  process.chdir(path.join(__dirname, "data/comprehensive"))
+  process.chdir(path.join(__dirname))
   const localSls = new ServerlessInvoker()
-  expect(localSls.servicePath).to.match(/data\/comprehensive$/)
+  expect(localSls.servicePath).to.match(/examples\/comprehensive$/)
 })
 
 it("should try to find service path in parent dir", function() {
-  process.chdir(path.join(__dirname, "data/comprehensive/subdir"))
+  process.chdir(path.join(__dirname, "./subdir"))
   const localSls = new ServerlessInvoker()
-  expect(localSls.servicePath).to.match(/data\/comprehensive$/)
+  expect(localSls.servicePath).to.match(/examples\/comprehensive$/)
 })
 
 it("should fail if serverless.yml not found", function() {
-  process.chdir(path.join(__dirname, "data/no-serverless-found"))
+  process.chdir(path.join(__dirname, "../../test-data/no-serverless-found"))
   expect(() => new ServerlessInvoker()).to.throw(
     /^Cannot find serverless.yml. Started search in working directory/
   )

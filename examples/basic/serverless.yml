@@ -1,4 +1,4 @@
-service: basic-example # NOTE: update this with your service name
+service: basic-example
 
 provider:
   name: aws

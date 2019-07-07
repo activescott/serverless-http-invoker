@@ -32,7 +32,7 @@ Use it in tests of Serverless functions to test your HTTP endpoints along with t
       return expect(response).to.eventually.have.property('statusCode', 200)
     })
 
-The test above is a test of a Serverless function defined in Serverless.yml as follows:
+The test above is a test of a Serverless function defined in a `Serverless.yml` as follows:
 
     functions:
       hello:
@@ -42,8 +42,8 @@ The test above is a test of a Serverless function defined in Serverless.yml as f
               path: api/hello
               method: get
 
-Some of the more common use cases are demonstrated in the basic tests at [the basic test cases](test/basic.js).
-An exhaustive list of what is supported in Some of the more common use cases are demonstrated in the basic tests at [the comprehensive test cases](test/comprehensive.js).
+Some of the more common use cases are demonstrated in the basic tests at [the basic test cases](examples/basic/basic.spec.js).
+An exhaustive list of what is supported in Some of the more common use cases are demonstrated in the basic tests at [the comprehensive test cases](examples/comprehensive/comprehensive.spec.js).
 
 ## Prerequisites / Usage Requirements
 

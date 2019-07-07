@@ -1,13 +1,13 @@
 "use strict"
-require("./support/setup.js")
+require("../../test/support/setup")
 const path = require("path")
 const expect = require("chai").expect
-const ServerlessInvoker = require("../index")
+const ServerlessInvoker = require("../../index")
 
 describe("basic", function() {
   let sls = null
   beforeEach(function() {
-    sls = new ServerlessInvoker(path.join(__dirname, "data/basic"))
+    sls = new ServerlessInvoker(path.join(__dirname))
   })
 
   it("should invoke simple path", function() {
