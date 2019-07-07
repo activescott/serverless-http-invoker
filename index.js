@@ -63,7 +63,7 @@ class ServerlessInvoker {
         let httpEvent = httpEvents.find(e => e.test(httpRequest))
         if (!httpEvent) {
           throw new Error(
-            `Serverless http event not found for HTTP request "${httpRequest}".`
+            `Serverless http event not found for HTTP request "${httpRequest}" in service path "${this.servicePath}".`
           )
         }
 
@@ -98,6 +98,10 @@ class ServerlessInvoker {
             })
             .catch(eLambdaFuncError => {
               // In this situation API Gateway returns 502 (bad gateway) and sets the response body to `{"message": "Internal server error"}`. We are adding a bit more detail to the error.
+              console.error(
+                "serverless-http-invoker error invoking function:",
+                eLambdaFuncError
+              )
               const response = {
                 statusCode: 502,
                 body: {

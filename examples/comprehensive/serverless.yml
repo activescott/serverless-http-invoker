@@ -1,9 +1,9 @@
-service: basic
+service: basic-example # NOTE: update this with your service name
 
 provider:
   name: aws
-  runtime: nodejs6.10
-  stage: dev
+  runtime: nodejs10.x
+  region: us-west-2
 
   environment:
     MY_SIMPLE: "simple value"
@@ -86,4 +86,10 @@ functions:
     events:
       - http:
           path: api/errorWorld
+          method: get
+  callback:
+    handler: handler.callback
+    events:
+      - http:
+          path: api/callback
           method: get

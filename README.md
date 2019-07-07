@@ -32,7 +32,7 @@ Use it in tests of Serverless functions to test your HTTP endpoints along with t
       return expect(response).to.eventually.have.property('statusCode', 200)
     })
 
-The test above is a test of a Serverless function defined in Serverless.yml as follows:
+The test above is a test of a Serverless function defined in a `Serverless.yml` as follows:
 
     functions:
       hello:
@@ -42,11 +42,14 @@ The test above is a test of a Serverless function defined in Serverless.yml as f
               path: api/hello
               method: get
 
-Many more examples and exaustive list of what is supported in [the tests](https://github.com/activescott/serverless-http-invoker/blob/master/test/test.js). Some additional real-world examples are demonstrated in the [sheetmonkey-server project](https://github.com/activescott/sheetmonkey-server). See [PluginsHandler.js](https://github.com/activescott/sheetmonkey-server/blob/master/server/test/PluginsHandler.js) and [PluginAuthHandler.js](https://github.com/activescott/sheetmonkey-server/blob/master/server/test/PluginAuthHandler.js) among others.
+Some of the more common use cases are demonstrated in the basic tests at [the basic test cases](examples/basic/basic.spec.js).
+An exhaustive list of what is supported in Some of the more common use cases are demonstrated in the basic tests at [the comprehensive test cases](examples/comprehensive/comprehensive.spec.js).
 
 ## Prerequisites / Usage Requirements
 
-Requires Node.js latest, LTS, or v6 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+Requires Node.js latest, LTS, and v10 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+
+If you need Node.js v6.x - v9.x support you can use [serverless-http-invoker@0.8.6](https://www.npmjs.com/package/serverless-http-invoker/v/0.8.6).
 
 Requires Serverless Framework v1.x.
 If you are new to the Serverless Framework, check out the [Serverless Framework Getting Started Guide](https://serverless.com/framework/docs/getting-started/).
@@ -71,15 +74,19 @@ Give a ⭐️ if this project helped you!
 
 ## Release Process (Deploying to NPM)
 
-To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a `v` and **postfixed with** an NPM distribution tag of `next`. For example:
+To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag and **postfixed with** an NPM distribution tag of `next`. For example:
 
-    git tag v1.0.1-next
+    git tag 1.0.1-next
 
-To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag prefixed with a v and **WITHOUT** a NPM distribution tag. For example:
+To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag **WITHOUT** a NPM distribution tag. For example:
 
-    git tag v1.0.1
+    git tag 1.0.1
 
 In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
+
+NOTE: To get the tag to GitHub push it with `git push --tags`.
+
+NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-next` and then push it with `git push --tags`. Or do the abbreviated from by force-pushing it like `git push --tags -f`.
 
 ## License 📝
 
