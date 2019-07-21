@@ -35,6 +35,7 @@
   },
   "scripts": {
     "test": "nyc ./node_modules/.bin/mocha ./examples/**/*.spec.js",
+    "pretest": "yarn lint",
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "coverage": "yarn run test && nyc report --reporter=text-lcov | coveralls"
@@ -52,6 +53,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
+    "semantic-release": "^16.0.0-beta.22",
     "serverless": "^1.27.3"
   },
   "resolutions": {
