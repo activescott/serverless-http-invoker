@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/serverless-http-invoker.svg)](https://www.npmjs.com/package/serverless-http-invoker)
-[![npm](https://img.shields.io/npm/dt/serverless-http-invoker.svg?logo=npm)](https://www.npmjs.com/package/serverless-http-invoker)
-[![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg)](https://travis-ci.org/activescott/serverless-http-invoker)
+[![npm downloads](https://img.shields.io/npm/dt/serverless-http-invoker.svg?logo=npm)](https://www.npmjs.com/package/serverless-http-invoker)
+[![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg?branch=master)](https://travis-ci.org/activescott/serverless-http-invoker)
 [![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg)](https://coveralls.io/github/activescott/serverless-http-invoker)
 [![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker)
@@ -75,22 +75,17 @@ Give a ⭐️ if this project helped you!
 
 ## Release Process (Deploying to NPM)
 
-To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag and **postfixed with** an NPM distribution tag of `next`. For example:
+We use [semantic-release](https://github.com/semantic-release/semantic-release) to consistently release [semver](https://semver.org/)-compatible versions. This project deploys to multiple [npm distribution tags](https://docs.npmjs.com/cli/dist-tag). Each of the below branches correspond to the following npm distribution tags:
 
-    git tag 1.0.1-next
+| branch | npm distribution tag |
+| ------ | -------------------- |
+| master | latest               |
+| beta   | beta                 |
 
-To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag **WITHOUT** a NPM distribution tag. For example:
-
-    git tag 1.0.1
-
-In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
-
-NOTE: To get the tag to GitHub push it with `git push --tags`.
-
-NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-next` and then push it with `git push --tags`. Or do the abbreviated from by force-pushing it like `git push --tags -f`.
+To trigger a release use a Conventional Commit following [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) on one of the above branches.
 
 ## License 📝
 
-Copyright © 2017 [scott@willeke.com](https://github.com/activescott).
+Copyright © 2017 [Scott Willeke](https://github.com/activescott).
 
 This project is [MIT](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE) licensed.

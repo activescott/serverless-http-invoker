@@ -5,47 +5,30 @@ node_js:
   - "10" # To keep v10 support alive even when lts shifts to a later version
   #- "6" # per https://github.com/activescott/serverless-http-invoker/issues/5; Dropping support for nodejs v6.x. v0.8.6 can still be used (as shown at https://travis-ci.org/activescott/serverless-http-invoker/jobs/389131287)
   #- "9" # oddly new versions of mocha don't work on node 9, but do work on 6, 8, & 10+: https://travis-ci.org/activescott/serverless-http-invoker/jobs/554058213#L463
+env:
+  global:
+    # GH_TOKEN (Github for semantic-release)
+    - secure: "jvKaljYOkQwKydS/5SHzMHFHESqh92OSVDIVmL+bJzPVOXVrd3DvZJx8J7JE7uZnoN0Z4qKbkMHyPsr2pzQHLFvY611LpsZ/JMlL3Ld3/ACqVUgL4Nd8Pef1jMBF4C20OTa6G31E7K1P4ayqyt73qY7DLREWqXHIF0J+uNRuSBH05AbLnDcr2umMpdJw1SNeMGqRP3MKKNw7uvcSueq9RKNI04ZtVQbOr9yoc8OW7Sy/dTTclarjQcGGcZ4wqZrPEB7/rEs6ojIlfkCeDy+Gj6wTJ/J0ZdTbhHc0KhJKCQE5/KtUhLpwYicsWjmuw+ZCaqpIoHCydlUMYNUirF/0YDMlq6eU2SahSNNVFoFpgHv6Q5/Z0aG+9ACaD/+r59ke4HhDHM3Fyjoh/MgOlOu7uch40PwZY7j3V9D3qj37cZkT1mWTu+S+izW+7U3/SDfrStuXcxwzGUlpGBynJbDSWkZ5xzGV+9R5v7RhBP5AYV/EMBPlp8+lN99RWMq8FX5i52pBos3Appi5ATkugrtYsr/h3SaHjfPjWtqJmVNXWMHFeU33/lLdO6eIVbuUbkjTHmWp+qkuPiFcyeNVixXMHwW85ujjmlwdxv3rboAwoZiVkU1/SbxFLawdPwkbOjVFGAp1JKIpf5RZVzv3oBU9ZW0d3JI56J/AhJlluo5otR0="
+    # NPM_TOKEN
+    - secure: "y8+yZe8m/3Zilo2rKzo9vhDW5NKFY2nmv0TSi/4hucmTGvC07sQcCbnq8U1D5wrBVd+iX+XMYnJeEXlRYwq+uS2C9j+roCjaPL8cpv1zXoxEFPHZFLWptTO2xMy+kvqWEhyZAQpRggDPZLsjFtifHPC/wvTo3iwHzuVo2QvIFy5A8UCxiPpkierPI0QlHzcygWcnVU7Rfx/7HOLsRToFM0J0V+hpnvNf8HrSMynBpgCJVQnxXa3oRLzWnPuW4rlvBhl9IU9QsWwUpdxF+L2HePyMcB1/TCLE5Xx9QCk6peUO5o35lJewA67L6o+fIfGow4UZRMuBAVyHJG/wTLY61AdaiV3tZ9fwbPXQbSrwHT8DProEvSWqced+lbd5EUC7x3m79yYQhSYMFlDfuY2OAn2ZtNR2+Gsio23Zn0ylwrKZblVHl7cCTLbcdMbJ6J0b3Y0BPCC8RyOI0TLT1mc53yuE+NMcUhoP3lkDwhCWB3r3/hdrt+tyDHJsAWF/pI7ymmTxJrkexRRK4Jhs0m7TPMecq78qMw1R6yNr55bmApXw0cvpdxNpXrtzopYrMjc5HfPddNLkLwjdEFrbI8XDv2yDKO74x+YvITCSRTjSoVRdZq+ec7/7h3g64q0AwWHvtinn8dNb/hwsLyl+uGeIui4QQK0oMB1IQi54tt+0jVw="
 cache: yarn
 script:
   - echo "Running with node version $(node -v) ..."
-  - yarn lint
   - yarn test
 jobs:
   include:
+    # Define the release stage that runs semantic-release
+    - stage: semantic-release
+      node_js: lts/*
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script:
+            - ./node_modules/.bin/semantic-release
+          on:
+            # Override `deploy` default of master; semantic-release will decide which branches to deploy on!
+            all_branches: true
     - stage: Report Coverage
       node_js: "node"
       script: echo "Running coverage report ..."
       after_success: yarn coverage # in after_success because we don't want to fail the build if this failed.
-    - stage: Deploy NPM
-      node_js: "node"
-      script: echo "Deploying to npm ..." # explicitly having a tag here also prevents default script (i.e. tests for node_js), which have already run in prior stage: https://docs.travis-ci.com/user/build-stages/#build-stages-and-deployments
-      before_deploy: # NOTE: only be triggered if Travis CI is actually deploying; https://docs.travis-ci.com/user/deployment/npm/#running-commands-before-and-after-deploy
-        - |
-          echo "Running yarn version --no-git-tag-version --new-version $TRAVIS_TAG ..."
-          yarn version --no-git-tag-version --new-version $TRAVIS_TAG
-      deploy:
-        # production releases
-        - provider: npm
-          email: scott@willeke.com
-          api_key:
-            secure: ua8Ei69/C08jIDQr2WbJAuS+5wERH4WUP9BHKrl/MSBFdtbSiUDkwZ8v80phvDGjPtejhpk1cbkwoZ9UwONnxrJhSdEqkrtlopN2YGLjKnvU3S8GzkVMq9UrY9DGnyEjsRXc5Jh48KImX5QwVsgQQnyvkpjqcQofD5hvuvBi7KG1O8hsNQzG1qmG+9J54scXq2BK9U+i+oPYsd4VrnRwUlTSpNyaZIVZHZmmdjdO+/zYPJvopapn52EKuBeuXmdRrQA2NM8tkkxzNjvZchcBn6yjKbjRA5Uwz9vQ5KEeX4snVsa3fT0ZNy4rNkiQxCXaq0K1oItOSk3QxDbvfI4FSkp2y/hkdMPyXDjg9reZOYvDzUe7BNFaDEw0MqXkjOwmRqfd9SMcNB1a1D/1gnFJ8fLLjfixwiPMTWtQwX4T1BGEWnuSFjvo9ofUr54507m6Rj+ZFgyykh3r/uwIfgsztW8xnnzEHDAPSH6nfWyGiD+jEHRcKvrr3Q1UnxgE7IQDIxINynyu0/dX8Sq4afkZL6zIv1TWIJznho1TCoOXGoAJe/rzfOlkM5TllMnYok+2OISDnLoJve3ABGKbuv7Fxt+9lebNWAN/WuydYep21jWklSxUzuEum5OGa1PGD5wnGWDXVdmB0WJ9uPZJUJ6qf8fkolqEd+ocDt2vf82awF0=
-          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
-          tag: latest # latest==production: https://docs.npmjs.com/adding-dist-tags-to-packages
-          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
-            tags: true
-            repo: activescott/serverless-http-invoker
-            branch: master
-            # only if the git tag that triggered this build was "vD.D.D" *WITHOUT* an NPM distribution tag postfix like `v1.0.1`
-            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$'
-        # tagged prereleases
-        - provider: npm
-          email: scott@willeke.com
-          api_key:
-            secure: ua8Ei69/C08jIDQr2WbJAuS+5wERH4WUP9BHKrl/MSBFdtbSiUDkwZ8v80phvDGjPtejhpk1cbkwoZ9UwONnxrJhSdEqkrtlopN2YGLjKnvU3S8GzkVMq9UrY9DGnyEjsRXc5Jh48KImX5QwVsgQQnyvkpjqcQofD5hvuvBi7KG1O8hsNQzG1qmG+9J54scXq2BK9U+i+oPYsd4VrnRwUlTSpNyaZIVZHZmmdjdO+/zYPJvopapn52EKuBeuXmdRrQA2NM8tkkxzNjvZchcBn6yjKbjRA5Uwz9vQ5KEeX4snVsa3fT0ZNy4rNkiQxCXaq0K1oItOSk3QxDbvfI4FSkp2y/hkdMPyXDjg9reZOYvDzUe7BNFaDEw0MqXkjOwmRqfd9SMcNB1a1D/1gnFJ8fLLjfixwiPMTWtQwX4T1BGEWnuSFjvo9ofUr54507m6Rj+ZFgyykh3r/uwIfgsztW8xnnzEHDAPSH6nfWyGiD+jEHRcKvrr3Q1UnxgE7IQDIxINynyu0/dX8Sq4afkZL6zIv1TWIJznho1TCoOXGoAJe/rzfOlkM5TllMnYok+2OISDnLoJve3ABGKbuv7Fxt+9lebNWAN/WuydYep21jWklSxUzuEum5OGa1PGD5wnGWDXVdmB0WJ9uPZJUJ6qf8fkolqEd+ocDt2vf82awF0=
-          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
-          tag: next
-          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
-            tags: true
-            repo: activescott/serverless-http-invoker
-            # only if the git tag that triggered this build was "vD.D.D" *WITH* an NPM distribution tag postfix of `next` like `v1.0.1-next`
-            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(-next)$'
