@@ -2,8 +2,9 @@
 [![npm downloads](https://img.shields.io/npm/dt/serverless-http-invoker.svg?logo=npm)](https://www.npmjs.com/package/serverless-http-invoker)
 [![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg?branch=master)](https://travis-ci.org/activescott/serverless-http-invoker)
 [![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg)](https://coveralls.io/github/activescott/serverless-http-invoker)
+[![Greenkeeper badge](https://badges.greenkeeper.io/activescott/serverless-http-invoker.svg)](https://greenkeeper.io/)
 [![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker) [![Greenkeeper badge](https://badges.greenkeeper.io/activescott/serverless-http-invoker.svg)](https://greenkeeper.io/)
+[![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker)
 
 # serverless-http-invoker
 
