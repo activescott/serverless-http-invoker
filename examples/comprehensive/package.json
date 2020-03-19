@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "serverless": "^1.46.1"
+    "serverless": "^1.67.0"
   }
 }
