@@ -52,7 +52,7 @@
     "coveralls": "^3.0.4",
     "mocha": "^8.3.2",
     "nyc": "^15.0.0",
-    "prettier": "^1.18.2",
+    "prettier": "^2.2.1",
     "semantic-release": "^17.0.4",
     "serverless": "^1.27.3"
   },
