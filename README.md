@@ -88,4 +88,4 @@ To trigger a release use a Conventional Commit following [Angular Commit Message
 
 Copyright © 2017 [Scott Willeke](https://github.com/activescott).
 
-This project is [MIT](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/activescott/serverless-http-invoker/blob/main/LICENSE) licensed.
