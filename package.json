@@ -52,18 +52,6 @@
     "mocha": "^8.3.2",
     "nyc": "^15.0.0",
     "prettier": "^1.18.2",
-    "serverless": "^1.27.3"
-  },
-  "resolutions": {
-    "lodash": "^4.17.11",
-    "js-yaml": "^3.13.1",
-    "url-parse": "^1.4.3",
-    "https-proxy-agent": "^2.2.0",
-    "mime": "^1.4.1",
-    "deep-extend": "^0.5.1",
-    "extend": "^3.0.2",
-    "moment": "^2.19.3",
-    "superagent": "^3.7.0",
-    "debug": "^2.6.9 || ^3.0"
+    "serverless": "^2.46.0"
   }
 }
