@@ -11,3 +11,4 @@ exclude:
   - scripts/
   - test/
   - coverage/
+  - release.config.js
