@@ -1,0 +1,88 @@
+name: build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: "Use Node.js (deliberately not using matrix)"
+        uses: actions/setup-node@v1
+        with:
+          node-version: v12.x
+
+      - name: install dependencies
+        run: |
+          npm i
+
+      - name: lint
+        run: |
+          npm run lint
+
+  build_and_test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node: [10, 12, 14]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: install dependencies
+        run: |
+          npm i
+
+      - name: test
+        env:
+          CI_NODE_VERSION: ${{ matrix.node }}
+        run: |
+          npm run test
+
+      - name: publish coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: nodejs-${{ matrix.node }}
+          parallel: true
+
+  finish_tests:
+    needs: build_and_test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+
+  deploy_package:
+    needs: finish_tests
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js v12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: v12.x
+
+      #- name: debug deploy_package
+      #  uses: actions/bin/debug@master
+
+      - name: deploy via semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm i semantic-release@17
+          ./node_modules/.bin/semantic-release
