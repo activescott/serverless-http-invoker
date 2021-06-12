@@ -6,11 +6,11 @@ The following is a set of guidelines for contributing to this project. These are
 
 ## How Can I Contribute?
 
-Feel free to check [issues page](https://github.com/activescott/serverless-http-invoker/issues) to find an enhancement to implement or bug to fix. You could also **[Improve the documentation](https://github.com/activescott/serverless-http-invoker/edit/master/README.md)**, **Report a Bug**, or **Suggest an Enhancement**.
+Feel free to check [issues page](https://github.com/activescott/serverless-http-invoker/issues) to find an enhancement to implement or bug to fix. You could also **[Improve the documentation](https://github.com/activescott/serverless-http-invoker/edit/main/README.md)**, **Report a Bug**, or **Suggest an Enhancement**.
 
 ### Contribute Code
 
 - Fork this repository and [submit a pull request](https://help.github.com/articles/creating-a-pull-request/).
 - Write tests
-- Ensure the linter passes with `yarn lint` or `npm run lint`
+- Ensure the linter passes with `npm run lint`
 - Ensure the tests pass at [the CI Server](https://travis-ci.org/activescott/serverless-http-invoker) by [following the status](https://help.github.com/articles/about-statuses/) of your pull request.

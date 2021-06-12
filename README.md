@@ -1,8 +1,8 @@
 [![npm version](https://badge.fury.io/js/serverless-http-invoker.svg)](https://www.npmjs.com/package/serverless-http-invoker)
 [![npm downloads](https://img.shields.io/npm/dt/serverless-http-invoker.svg?logo=npm)](https://www.npmjs.com/package/serverless-http-invoker)
-[![Build Status](https://travis-ci.org/activescott/serverless-http-invoker.svg?branch=master)](https://travis-ci.org/activescott/serverless-http-invoker)
+[![Build Status](https://github.com/activescott/serverless-http-invoker/workflows/build/badge.svg)](https://github.com/activescott/serverless-http-invoker/actions)
 [![Coverage Status](https://coveralls.io/repos/github/activescott/serverless-http-invoker/badge.svg)](https://coveralls.io/github/activescott/serverless-http-invoker)
-[![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/activescott/serverless-http-invoker.svg)](https://github.com/activescott/serverless-http-invoker/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/serverless-http-invoker.svg?style=social)](https://github.com/activescott/serverless-http-invoker)
 
 # serverless-http-invoker
@@ -57,7 +57,7 @@ If you are new to the Serverless Framework, check out the [Serverless Framework 
 
 ## Install
 
-yarn (`yarn add serverless-http-invoker --dev`) or npm (`npm install serverless-http-invoker --save-dev`)
+npm (`npm install serverless-http-invoker --save-dev`) or yarn (`yarn add serverless-http-invoker --dev`)
 
 ## Features
 
@@ -79,7 +79,7 @@ We use [semantic-release](https://github.com/semantic-release/semantic-release) 
 
 | branch | npm distribution tag |
 | ------ | -------------------- |
-| master | latest               |
+| main   | latest               |
 | beta   | beta                 |
 
 To trigger a release use a Conventional Commit following [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) on one of the above branches.
