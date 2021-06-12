@@ -37,8 +37,7 @@
     "test": "nyc ./node_modules/.bin/mocha ./examples/**/*.spec.js",
     "pretest": "npm run lint",
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "coverage": "npm run test && nyc report --reporter=text-lcov | coveralls"
+    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\""
   },
   "dependencies": {
     "lambda-wrapper": "^0.3.0"
