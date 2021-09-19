@@ -84,5 +84,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm i semantic-release@17
-          ./node_modules/.bin/semantic-release
+          npx semantic-release@17
