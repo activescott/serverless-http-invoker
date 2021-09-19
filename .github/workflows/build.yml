@@ -50,6 +50,7 @@ jobs:
 
       - name: publish coverage
         uses: coverallsapp/github-action@master
+        continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: nodejs-${{ matrix.node }}
@@ -61,6 +62,7 @@ jobs:
     steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@master
+        continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
