@@ -7,7 +7,7 @@ updates:
       # Check for npm updates on Sundays
       day: "saturday"
     allow:
-      - dependency-type: "production"
+      - dependency-type: "direct"
     directory: "/"
     commit-message:
       # for production deps, prefix commit messages with "fix" (trigger a patch release)
