@@ -2,7 +2,7 @@ service: basic-example # NOTE: update this with your service name
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs14.x
   region: us-west-2
 
   environment:
