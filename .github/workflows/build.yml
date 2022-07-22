@@ -1,89 +1,25 @@
-name: build
-
+# We want pushes to main, beta, and alpha to trigger a publish to npm for the corresponding npm dist-tag.
+# Any pull request targeting deploy branches should run all tests.
 on:
   push:
-    branches: [main]
+    branches: [main, beta, alpha]
+
   pull_request:
-    branches: [main]
+    branches: [main, beta, alpha]
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
+  test:
+    uses: activescott/github-actions-workflows/.github/workflows/npm-tester.yml@npm-tester-v4
+    with:
+      package_dir: ./
+      node_versions: "[14, 16, 18]"
+      do_coveralls: true
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: "Use Node.js (deliberately not using matrix)"
-        uses: actions/setup-node@v1
-        with:
-          node-version: v12.x
-
-      - name: install dependencies
-        run: |
-          npm i
-
-      - name: lint
-        run: |
-          npm run lint
-
-  build_and_test:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node: [10, 12, 14]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: install dependencies
-        run: |
-          npm i
-
-      - name: test
-        env:
-          CI_NODE_VERSION: ${{ matrix.node }}
-        run: |
-          npm run test
-
-      - name: publish coverage
-        uses: coverallsapp/github-action@master
-        continue-on-error: true
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          flag-name: nodejs-${{ matrix.node }}
-          parallel: true
-
-  finish_tests:
-    needs: build_and_test
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
-        continue-on-error: true
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel-finished: true
-
-  deploy_package:
-    needs: finish_tests
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js v12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: v12.x
-
-      #- name: debug deploy_package
-      #  uses: actions/bin/debug@master
-
-      - name: deploy via semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npx semantic-release@17
+  publish:
+    if: ${{ github.event_name != 'pull_request' }}
+    needs: [test]
+    uses: activescott/github-actions-workflows/.github/workflows/npm-publisher.yml@npm-publisher-v4
+    with:
+      package_dir: /
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
