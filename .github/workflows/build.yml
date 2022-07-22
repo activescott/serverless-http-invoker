@@ -18,7 +18,7 @@ jobs:
   publish:
     if: ${{ github.event_name != 'pull_request' }}
     needs: [test]
-    uses: activescott/github-actions-workflows/.github/workflows/npm-publisher.yml@npm-publisher-v4
+    uses: activescott/github-actions-workflows/.github/workflows/npm-publisher.yml@npm-publisher-v4.0.1
     with:
       package_dir: /
     secrets:
