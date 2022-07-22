@@ -34,7 +34,7 @@ class ServerlessInvoker {
 
   initializeServerless() {
     const config = {
-      servicePath: this.servicePath
+      servicePath: this.servicePath,
     }
     const sls = new Serverless(config)
     // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
@@ -58,9 +58,9 @@ class ServerlessInvoker {
     // Read the serverless.yml file
     return this.initializeServerless()
       .then(() => this.loadServerlessEvents())
-      .then(httpEvents => {
+      .then((httpEvents) => {
         // find the event that matches the specified httpRequest
-        let httpEvent = httpEvents.find(e => e.test(httpRequest))
+        let httpEvent = httpEvents.find((e) => e.test(httpRequest))
         if (!httpEvent) {
           throw new Error(
             `Serverless http event not found for HTTP request "${httpRequest}" in service path "${this.servicePath}".`
@@ -75,15 +75,14 @@ class ServerlessInvoker {
             httpEvent,
             httpRequest
           ),
-          queryStringParameters: ServerlessInvoker.parseQueryStringParameters(
-            httpRequest
-          ),
-          httpMethod: ServerlessInvoker.parseHttpMethod(httpRequest)
+          queryStringParameters:
+            ServerlessInvoker.parseQueryStringParameters(httpRequest),
+          httpMethod: ServerlessInvoker.parseHttpMethod(httpRequest),
         })
 
         return this.loadServerlessEnvironment().then(() => {
           return this.invokeWithLambdaWrapper(httpEvent, event, context)
-            .then(response => {
+            .then((response) => {
               if (
                 response &&
                 response.headers &&
@@ -96,7 +95,7 @@ class ServerlessInvoker {
               }
               return response
             })
-            .catch(eLambdaFuncError => {
+            .catch((eLambdaFuncError) => {
               // In this situation API Gateway returns 502 (bad gateway) and sets the response body to `{"message": "Internal server error"}`. We are adding a bit more detail to the error.
               console.error(
                 "serverless-http-invoker error invoking function:",
@@ -107,8 +106,8 @@ class ServerlessInvoker {
                 body: {
                   message: "Internal server error",
                   test_debug_error_message: eLambdaFuncError.toString(),
-                  test_debug_error_stack: eLambdaFuncError.stack
-                }
+                  test_debug_error_stack: eLambdaFuncError.stack,
+                },
               }
               return response
             })
@@ -184,23 +183,23 @@ class ServerlessInvoker {
   loadServerlessEvents() {
     let funcs = this.serverless.service
       .getAllFunctions()
-      .map(fname => {
+      .map((fname) => {
         let funcObj = this.serverless.service.getFunction(fname)
         let events = this.serverless.service.getAllEventsInFunction(fname)
         let f = {
           name: fname,
           handler: funcObj.handler,
           events: events.filter(
-            e => Object.keys(e).includes("http") && e.http !== null
-          )
+            (e) => Object.keys(e).includes("http") && e.http !== null
+          ),
         }
         return f
       })
-      .filter(f => f.events.length > 0)
-      .map(f => {
-        f.events = f.events.map(evt => {
+      .filter((f) => f.events.length > 0)
+      .map((f) => {
+        f.events = f.events.map((evt) => {
           // add a path parser regex:
-          RegExp.escape = function(s) {
+          RegExp.escape = function (s) {
             // https://stackoverflow.com/a/3561711/51061
             return s.replace(/[-/\\^$*+?.()|[\]]/g, "\\$&")
           }
@@ -232,11 +231,11 @@ class ServerlessInvoker {
           let matchPathParamNames = new RegExp(matchPathParamNamesPattern, "gi")
           let pathParamNames = matchPathParamNames.exec(path).slice(1) // the first element is full matched text so slice it off
           // remove the surrounding bracket characters:
-          pathParamNames = pathParamNames.map(p =>
+          pathParamNames = pathParamNames.map((p) =>
             p.replace(/^\{([^}]+)\}$/, "$1")
           )
           // remove the '+' postfix if it exists
-          pathParamNames = pathParamNames.map(p =>
+          pathParamNames = pathParamNames.map((p) =>
             p.endsWith("+") ? p.substring(0, p.length - 1) : p
           )
           // console.log('pathParamNames:', pathParamNames, 'path:', path)
@@ -263,11 +262,11 @@ class ServerlessInvoker {
           return Object.assign(evt.http, {
             matcher: matcher,
             pathParamNames: pathParamNames,
-            test: request => {
+            test: (request) => {
               const result = matcher.test(request)
               // console.log(`${method} ${path}: ${request} == ${result} \n  pattern:${matcher.source}`)
               return result
-            }
+            },
           })
         })
         return f
