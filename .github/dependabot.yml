@@ -2,13 +2,12 @@ version: 2
 updates:
   # docs v2 https://docs.github.com/en/free-pro-team@latest/github/administering-a-repository/configuration-options-for-dependency-updates
   - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "monthly"
-      # Check for npm updates on Sundays
-      day: "saturday"
+      day: "friday"
     allow:
       - dependency-type: "direct"
-    directory: "/"
     commit-message:
       # for production deps, prefix commit messages with "fix" (trigger a patch release)
       prefix: "fix"
