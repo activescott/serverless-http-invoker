@@ -34,7 +34,7 @@ functions:
   shorthand_path_syntax:
     handler: handler.hello
     events:
-      - http: GET api/shorthand
+      - http: GET /api/shorthand
 
   malformed_http_event:
     handler: handler.hello
@@ -46,7 +46,7 @@ functions:
   path_with_multiple_params:
     handler: handler.hello
     events:
-      - http: GET api/res1/{res1ID}/res2/{res2ID}
+      - http: GET /api/res1/{res1ID}/res2/{res2ID}
 
   env:
     handler: handler.env

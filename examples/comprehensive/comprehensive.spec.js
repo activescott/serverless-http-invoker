@@ -22,12 +22,12 @@ it("should invoke path with params", function () {
 })
 
 it("should invoke path with shorthand", function () {
-  const response = sls.invoke("GET api/shorthand")
+  const response = sls.invoke("GET /api/shorthand")
   return expect(response).to.eventually.have.property("statusCode", 200)
 })
 
 it("should invoke path with multiple params", function () {
-  const response = sls.invoke("GET api/res1/1111/res2/2222")
+  const response = sls.invoke("GET /api/res1/1111/res2/2222")
   return expect(response).to.eventually.have.property("statusCode", 200)
 })
 
@@ -57,7 +57,7 @@ it("should pass data to POST", function () {
 })
 
 it("should pass pathParameters with values when present", function () {
-  const response = sls.invoke("GET api/res1/xxx/res2/yyy")
+  const response = sls.invoke("GET /api/res1/xxx/res2/yyy")
   return response.then((resp) => {
     return expect(resp.body.input).to.have.deep.property("pathParameters", {
       res1ID: "xxx",
@@ -67,7 +67,7 @@ it("should pass pathParameters with values when present", function () {
 })
 
 it("should pass pathParameters along with existing event too", function () {
-  const response = sls.invoke("GET api/res1/xxx/res2/yyy", {
+  const response = sls.invoke("GET /api/res1/xxx/res2/yyy", {
     requestPayload: "boo",
   })
   return response.then((resp) => {
