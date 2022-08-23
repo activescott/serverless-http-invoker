@@ -1,12 +1,13 @@
 "use strict"
 const path = require("path")
-const fs = require("fs")
+const { existsSync } = require("fs")
+const fsPromises = require("fs/promises")
 const Serverless = require("serverless")
-const Promise = require("bluebird")
 const { wrap } = require("lambda-wrapper")
 const assert = require("assert")
 const url = require("url")
 const querystring = require("querystring")
+const YAML = require("yaml")
 
 class ServerlessInvoker {
   /**
@@ -14,14 +15,14 @@ class ServerlessInvoker {
    * @param {*string} servicePath Path to the directory containing the serverless file.
    */
   constructor(servicePath) {
-    this.servicePath = servicePath || this.findServicePath()
+    this.servicePath = servicePath || ServerlessInvoker.findServicePath()
     this.serverless = null
     this.serverlessEvents = null
   }
 
-  findServicePath() {
+  static findServicePath() {
     let dir = process.cwd()
-    while (dir !== "/" && !fs.existsSync(path.join(dir, "serverless.yml"))) {
+    while (dir !== "/" && !existsSync(path.join(dir, "serverless.yml"))) {
       dir = path.dirname(dir)
     }
     if (dir === "/") {
@@ -32,14 +33,30 @@ class ServerlessInvoker {
     return dir
   }
 
-  initializeServerless() {
+  static async loadServerlessYaml(path) {
+    const file = await fsPromises.readFile(path, "utf8")
+    return YAML.parse(file)
+  }
+
+  async initializeServerless() {
+    process.env.SLS_DEBUG = "*"
+    // Serverless v3 requires us to load the config manually: https://www.serverless.com/framework/docs/deprecations#serverless-constructor-service-configuration-dependency
+    // see also https://www.serverless.com/framework/docs/guides/upgrading-v3#low-level-changes
+    // https://www.serverless.com/framework/docs/deprecations#serverless-constructor-configcommands-and-configoptions-requirement
+    const slsService = await ServerlessInvoker.loadServerlessYaml(
+      path.join(this.servicePath, "serverless.yml")
+    )
     const config = {
-      servicePath: this.servicePath,
+      serviceDir: path.dirname(this.servicePath),
+      configurationFilename: "serverless.yml",
+      configuration: slsService,
+      commands: [],
+      options: {},
     }
     const sls = new Serverless(config)
     // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
     return sls.init().then(() => {
-      return sls.variables.populateService().then(() => {
+      sls.service.load().then(() => {
         sls.service.setFunctionNames({})
         sls.service.mergeArrays()
         sls.service.validate()
@@ -54,7 +71,7 @@ class ServerlessInvoker {
    * @param {*object} event The event that should be submitted to the http endpoint.
    * @param {*object} context The context passed to the lambda function
    */
-  invoke(httpRequest, event, context) {
+  async invoke(httpRequest, event, context) {
     // Read the serverless.yml file
     return this.initializeServerless()
       .then(() => this.loadServerlessEvents())
@@ -160,27 +177,22 @@ class ServerlessInvoker {
     return myURL.pathname
   }
 
-  loadServerlessEnvironment() {
-    return Promise.try(() => {
-      let env = this.serverless.service.provider.environment
-      Object.assign(process.env, env)
-      return env
-    })
+  async loadServerlessEnvironment() {
+    let env = this.serverless.service.provider.environment
+    Object.assign(process.env, env)
+    return env
   }
 
-  invokeWithLambdaWrapper(httpEvent, event, context) {
-    return Promise.try(() => {
-      let handlerModule = require(path.join(
-        this.servicePath,
-        httpEvent.handlerPath
-      ))
-      let lambda = wrap(handlerModule, { handler: httpEvent.handlerName })
-      lambda = Promise.promisifyAll(lambda)
-      return lambda.runHandler(event, context || {})
-    })
+  async invokeWithLambdaWrapper(httpEvent, event, context) {
+    const handlerModule = require(path.join(
+      this.servicePath,
+      httpEvent.handlerPath
+    ))
+    const lambda = wrap(handlerModule, { handler: httpEvent.handlerName })
+    return lambda.runHandler(event, context || {})
   }
 
-  loadServerlessEvents() {
+  async loadServerlessEvents() {
     let funcs = this.serverless.service
       .getAllFunctions()
       .map((fname) => {
@@ -281,7 +293,7 @@ class ServerlessInvoker {
         events.push(e)
       }
     }
-    return Promise.resolve(events)
+    return events
   }
 }
 
