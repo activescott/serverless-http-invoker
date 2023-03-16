@@ -6,7 +6,7 @@ const ServerlessInvoker = require("../../index")
 
 describe("basic", function () {
   // in serverless v3 these started taking longer than the default 2000ms
-  this.timeout(2500)
+  this.timeout(4000)
 
   let sls = null
   beforeEach(function () {
