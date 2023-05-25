@@ -28,5 +28,5 @@ Examples:
 ## Todos:
 
 - [ ] Write tests
-- [ ] Fix linting errors
-- [ ] All tests pass on our CI Server: https://travis-ci.org/activescott/serverless-http-invoker
+- [ ] Fix linting errors (run `npm run lint` locally)
+- [ ] All tests pass on our CI Server (you should see green "checks" in the PR, you can also run these locally with `npm run test`)
