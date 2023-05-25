@@ -56,7 +56,7 @@ class ServerlessInvoker {
     const sls = new Serverless(config)
     // NOTE: I've seen sls.init() run very slowly; nearly 500ms!
     return sls.init().then(() => {
-      sls.service.load().then(() => {
+      return sls.service.load().then(() => {
         sls.service.setFunctionNames({})
         sls.service.mergeArrays()
         sls.service.validate()
