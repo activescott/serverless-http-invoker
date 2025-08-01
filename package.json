@@ -52,6 +52,6 @@
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "prettier": "^2.7.1",
-    "serverless": "^3.31.0"
+    "serverless": "^4.17.2"
   }
 }
