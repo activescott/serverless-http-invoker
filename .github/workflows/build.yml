@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main, beta, alpha]
 
+permissions:
+  id-token: write # Required for OIDC authentication with npm trusted publishers
+  contents: read
+
 jobs:
   test:
     uses: activescott/github-actions-workflows/.github/workflows/npm-tester.yml@npm-tester-v4
