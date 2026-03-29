@@ -11,6 +11,8 @@ Locally invoke [Serverless](https://github.com/serverless/serverless) functions 
 
 It makes it easy to test not only your handler logic, but also ensures that you have your http events setup properly in serverless.yml without deploying.
 
+> **Note on Serverless Framework & Node.js version support:** This project currently supports **Serverless Framework v3** and **Node.js 20** (the `nodejs20.x` Lambda runtime). Supporting the `nodejs22.x` Lambda runtime [requires upgrading to Serverless Framework v4](https://github.com/serverless/serverless/issues/12922#issuecomment-2563870220), which I haven't done yet. I maintain a number of open source projects and want to dedicate my time to the ones people are actively using. If you'd like to see support for Serverless v4 and Node.js 22, please [open an issue](https://github.com/activescott/serverless-http-invoker/issues) requesting it or submit a pull request — I'm happy to support it! — _Scott Willeke_
+
 <!-- TOC -->
 
 - [Usage / Quick Start](#usage--quick-start)
@@ -48,11 +50,9 @@ An exhaustive list of what is supported in Some of the more common use cases are
 
 ## Prerequisites / Usage Requirements
 
-Requires Node.js latest, LTS, and v10 ([tested](https://travis-ci.org/activescott/serverless-http-invoker)).
+Requires Node.js 20 ([tested](https://github.com/activescott/serverless-http-invoker/actions)).
 
-If you need Node.js v6.x - v9.x support you can use [serverless-http-invoker@0.8.6](https://www.npmjs.com/package/serverless-http-invoker/v/0.8.6).
-
-Requires Serverless Framework v1.x.
+Requires Serverless Framework v3.
 If you are new to the Serverless Framework, check out the [Serverless Framework Getting Started Guide](https://serverless.com/framework/docs/getting-started/).
 
 ## Install
