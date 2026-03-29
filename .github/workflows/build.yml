@@ -1,19 +1,53 @@
-# We want pushes to main, beta, and alpha to trigger a publish to npm for the corresponding npm dist-tag.
-# Any pull request targeting deploy branches should run all tests.
+name: build
+
 on:
   push:
     branches: [main, beta, alpha]
-
   pull_request:
     branches: [main, beta, alpha]
 
 jobs:
   test:
-    uses: activescott/github-actions-workflows/.github/workflows/npm-tester.yml@npm-tester-v4
-    with:
-      package_dir: ./
-      node_versions: "[14, 16, 18]"
-      do_coveralls: true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16, 18, 20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "npm"
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: test
+        env:
+          CI_NODE_VERSION: ${{ matrix.node }}
+        run: npm test
+
+      - name: publish coverage
+        uses: coverallsapp/github-action@v2
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: nodejs-${{ matrix.node }}
+          parallel: true
+
+  coveralls_finished:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: coveralls finished
+        uses: coverallsapp/github-action@v2
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
 
   publish:
     if: ${{ github.event_name != 'pull_request' }}

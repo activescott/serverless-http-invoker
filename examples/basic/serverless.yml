@@ -2,7 +2,7 @@ service: basic-example
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   region: us-west-2
 
 functions:
