@@ -56,7 +56,7 @@ jobs:
     environment: npm
     permissions:
       id-token: write # Required for npm provenance / OIDC
-      contents: read
+      contents: write # Required for semantic-release to push tags and create releases
     steps:
       - uses: actions/checkout@v4
 
