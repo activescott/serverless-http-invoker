@@ -10,7 +10,7 @@ updates:
       - dependency-type: "direct"
     ignore:
       - dependency-name: "serverless"
-        update-types: ["version-update:semver-major"]
+        versions: [">=4.0.0"]
     commit-message:
       # for production deps, prefix commit messages with "fix" (trigger a patch release)
       prefix: "fix"
